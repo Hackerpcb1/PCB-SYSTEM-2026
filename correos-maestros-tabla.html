@@ -35,6 +35,13 @@
       border-bottom: 1px solid var(--border-soft);
     }
 
+    .email-table td:first-child {
+      text-align: center;
+      font-weight: bold;
+      color: var(--primary);
+      min-width: 50px;
+    }
+
     .email-table tbody tr:hover {
       background-color: #f8f9fa;
     }
@@ -491,6 +498,7 @@
       <table class="email-table" id="emailTable">
         <thead>
           <tr>
+            <th>#</th>
             <th data-translate="Nombre del Maestro">Nombre del Maestro</th>
             <th data-translate="Correo Electrónico">Correo Electrónico</th>
             <th data-translate="Asignatura">Asignatura</th>
@@ -498,7 +506,7 @@
             <th data-translate="Grado">Grado</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="emailTableBody">
           <tr>
             <td>Acosta Meléndez, Vilmarie</td>
             <td><a href="mailto:de140504@miescuela.pr" class="email-link">de140504@miescuela.pr</a></td>
@@ -518,7 +526,7 @@
             <td><a href="mailto:de168674@miescuela.pr" class="email-link">de168674@miescuela.pr</a></td>
             <td>Artes Culinarias</td>
             <td>---</td>
-            <td>Vocacional</td>
+            <td>10, 11, 12</td>
           </tr>
           <tr>
             <td>Alvarado Berríos, Angélica</td>
@@ -679,7 +687,7 @@
             <td><a href="mailto:de155939@miescuela.pr" class="email-link">de155939@miescuela.pr</a></td>
             <td>Enfermería</td>
             <td>---</td>
-            <td>Vocacional</td>
+            <td>10, 11, 12</td>
           </tr>
           <tr>
             <td>Ortiz Luna, Carelyn I.</td>
@@ -700,7 +708,7 @@
             <td><a href="mailto:de66472@miescuela.pr" class="email-link">de66472@miescuela.pr</a></td>
             <td>Cosmetología</td>
             <td>---</td>
-            <td>Vocacional</td>
+            <td>10, 11, 12</td>
           </tr>
           <tr>
             <td>Ortiz Rosado, Emma</td>
@@ -735,7 +743,7 @@
             <td><a href="mailto:de109026@miescuela.pr" class="email-link">de109026@miescuela.pr</a></td>
             <td>Elaboración de Productos Agrícolas</td>
             <td>---</td>
-            <td>Vocacional</td>
+            <td>10, 11, 12</td>
           </tr>
           <tr>
             <td>Rivas Aponte, Luis E.</td>
@@ -749,7 +757,7 @@
             <td><a href="mailto:de155982@miescuela.pr" class="email-link">de155982@miescuela.pr</a></td>
             <td>DECACoop</td>
             <td>---</td>
-            <td>Vocacional</td>
+            <td>10, 11, 12</td>
           </tr>
           <tr>
             <td>Rivera Berrios, Ana M.</td>
@@ -889,7 +897,7 @@
             <td><a href="mailto:de167766@miescuela.pr" class="email-link">de167766@miescuela.pr</a></td>
             <td>Computec</td>
             <td>---</td>
-            <td>Vocacional</td>
+            <td>10, 11, 12</td>
           </tr>
           <tr>
             <td>Virella Ramos, Desiré</td>
@@ -928,6 +936,26 @@
   </footer>
 
   <script>
+    // Numerar filas al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+      const tbody = document.getElementById('emailTableBody');
+      if (tbody) {
+        const rows = tbody.getElementsByTagName('tr');
+        let counter = 1;
+        for (let i = 0; i < rows.length; i++) {
+          const row = rows[i];
+          // Crear celda de número
+          const numCell = document.createElement('td');
+          numCell.textContent = counter;
+          numCell.style.fontWeight = 'bold';
+          numCell.style.color = 'var(--primary)';
+          numCell.style.textAlign = 'center';
+          row.insertBefore(numCell, row.firstChild);
+          counter++;
+        }
+      }
+    });
+
     function filterTable() {
       const searchInput = document.getElementById('searchInput').value.toUpperCase();
       const subjectFilter = document.getElementById('subjectFilter').value.toUpperCase();
@@ -938,12 +966,12 @@
 
       for (let i = 1; i < tr.length; i++) {
         const tds = tr[i].getElementsByTagName('td');
-        if (tds.length > 0) {
-          const name = tds[0].textContent.toUpperCase();
-          const email = tds[1].textContent.toUpperCase();
-          const subject = tds[2].textContent.toUpperCase();
-          const hours = tds[3].textContent.toUpperCase();
-          const grade = tds[4].textContent.toUpperCase();
+        if (tds.length > 1) { // Ahora hay una celda extra por el número
+          const name = tds[1].textContent.toUpperCase(); // Nombre está en td[1]
+          const email = tds[2].textContent.toUpperCase();
+          const subject = tds[3].textContent.toUpperCase();
+          const hours = tds[4].textContent.toUpperCase();
+          const grade = tds[5].textContent.toUpperCase();
 
           // Combine all text for global search
           const allText = name + " " + email + " " + subject + " " + hours + " " + grade;
@@ -954,6 +982,8 @@
 
           if (matchesSearch && matchesSubject && matchesGrade) {
             tr[i].style.display = '';
+            // Actualizar número visible
+            tds[0].textContent = tr[i].getAttribute('data-num') || tds[0].textContent;
           } else {
             tr[i].style.display = 'none';
           }
