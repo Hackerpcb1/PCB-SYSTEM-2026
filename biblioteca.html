@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="es" id="htmlRoot">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca Digital – Escuela Superior Vocacional Pablo Colón Berdecia</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+  <link rel="stylesheet" href="dropdown-fix.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="translations.js"></script>
+  
+  <style>
+    /* Hero Section - Estilo consistente */
+    .hero {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.85) 0%, rgba(118, 75, 162, 0.85) 100%),
+        url('images14.jpeg') center center no-repeat;
+      background-size: cover;
+      background-attachment: scroll;
+      background-position: center center;
+      padding: 5rem 0 6rem;
+      position: relative;
+      overflow: hidden;
+      min-height: 650px;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+      background-size: cover;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    body.dark-mode .hero {
+      background: linear-gradient(135deg, rgba(11, 18, 32, 0.85) 0%, rgba(15, 23, 42, 0.85) 100%),
+        url('images14.jpeg') center center no-repeat;
+      background-size: cover;
+    }
+
+    /* Estilos para Reserva de Espacios */
+    .space-reservation-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 3rem 0;
+      margin: 3rem 0;
+      border-radius: 20px;
+    }
+
+    .reservation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .space-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .space-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+    }
+
+    body.dark-mode .space-card {
+      background: rgba(17, 24, 39, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .space-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .space-card h3 {
+      color: #667eea;
+      margin-bottom: 0.5rem;
+    }
+
+    body.dark-mode .space-card h3 {
+      color: #38bdf8;
+    }
+
+    /* Modal de Reserva */
+    .reservation-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .reservation-modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    body.dark-mode .modal-content {
+      background: #1e293b;
+      color: #e5e7eb;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    body.dark-mode .form-group label {
+      color: #e5e7eb;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    body.dark-mode .form-group input,
+    body.dark-mode .form-group select,
+    body.dark-mode .form-group textarea {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(56, 189, 248, 0.3);
+      color: #e5e7eb;
+    }
+
+    /* Calendario */
+    .calendar-container {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    }
+
+    body.dark-mode .calendar-container {
+      background: rgba(17, 24, 39, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .calendar-nav-btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.5rem;
+    }
+
+    .calendar-day-header {
+      text-align: center;
+      font-weight: 600;
+      padding: 0.75rem;
+      background: #f3f4f6;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    body.dark-mode .calendar-day-header {
+      background: rgba(31, 41, 55, 0.6);
+      color: #38bdf8;
+    }
+
+    .calendar-day {
+      aspect-ratio: 1;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 0.5rem;
+      cursor: pointer;
+      background: white;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .calendar-day:hover {
+      background: #f3f4f6;
+      border-color: #667eea;
+    }
+
+    body.dark-mode .calendar-day {
+      background: rgba(31, 41, 55, 0.4);
+      border-color: rgba(56, 189, 248, 0.2);
+      color: #e5e7eb;
+    }
+
+    body.dark-mode .calendar-day:hover {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: #38bdf8;
+    }
+
+    .calendar-day.today {
+      border: 2px solid #667eea;
+      background: rgba(102, 126, 234, 0.1);
+    }
+
+    .calendar-day.has-events {
+      background: rgba(102, 126, 234, 0.05);
+    }
+
+    .calendar-day.has-events::after {
+      content: '•';
+      color: #667eea;
+      font-size: 1.5rem;
+      margin-top: 0.25rem;
+    }
+
+    /* Centro de Apoyo Académico */
+    .academic-support-section {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      padding: 3rem 0;
+      margin: 3rem 0;
+      border-radius: 20px;
+    }
+
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .support-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    body.dark-mode .support-card {
+      background: rgba(17, 24, 39, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    /* Recursos Educativos */
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .resource-link-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: all 0.3s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .resource-link-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    body.dark-mode .resource-link-card {
+      background: rgba(17, 24, 39, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .resource-link-card i {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #667eea;
+    }
+
+    body.dark-mode .resource-link-card i {
+      color: #38bdf8;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header (mantén tu header existente) -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+      <button class="hamburger-menu" id="hamburgerBtn">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="Menú">Menú</h3>
+      <button class="sidebar-close" id="closeSidebar">&times;</button>
+    </div>
+    <div class="sidebar-content">
+      <!-- Navegación Principal -->
+      <a href="index.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">🏠</span>
+        <span class="sidebar-text" data-translate="Inicio">Inicio</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+
+      <a href="quienes-somos.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">🏫</span>
+        <span class="sidebar-text" data-translate="Quiénes Somos">Quiénes Somos</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+
+      <!-- Servicios Digitales (Expandible) -->
+      <div class="sidebar-item" id="servicesToggle">
+        <span class="sidebar-icon">💻</span>
+        <span class="sidebar-text" data-translate="Servicios Digitales">Servicios Digitales</span>
+        <span class="sidebar-arrow">›</span>
+      </div>
+      <div class="theme-options" id="servicesOptions" style="display: none;">
+        <a href="matricula.html" class="theme-option">
+          <span>📝</span> Matrícula Online
+        </a>
+        <a href="solicitudes.html" class="theme-option">
+          <span>📄</span> Solicitud de Documentos
+        </a>
+        <a href="servicios-tecnicos.html" class="theme-option">
+          <span>🔧</span> Servicios Técnicos
+        </a>
+        <a href="orientacion.html" class="theme-option">
+          <span>🧠</span> Orientación
+        </a>
+        <a href="biblioteca.html" class="theme-option">
+          <span>📚</span> Biblioteca
+        </a>
+        <a href="comedor.html" class="theme-option">
+          <span>🍽️</span> Comedor
+        </a>
+        <a href="padres.html" class="theme-option">
+          <span>👨‍👩‍👧</span> Portal de Padres
+        </a>
+        <a href="seguridad.html" class="theme-option">
+          <span>🛡️</span> Seguridad
+        </a>
+        <a href="evidencia.html" class="theme-option">
+          <span>📊</span> Dashboard Evidencia
+        </a>
+      </div>
+
+      <a href="participacion-comunitaria.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">🎓</span>
+        <span class="sidebar-text" data-translate="Vida Estudiantil">Vida Estudiantil</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+
+      <a href="normas-reglamentos.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">📋</span>
+        <span class="sidebar-text" data-translate="Normas">Normas</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+
+      <!-- Separador -->
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 1rem 0;"></div>
+
+      <!-- Cambiar Tema -->
+      <div class="sidebar-item" id="themeToggle">
+        <span class="sidebar-icon">🎨</span>
+        <span class="sidebar-text" data-translate="Cambiar Tema">Cambiar Tema</span>
+        <span class="sidebar-arrow">›</span>
+      </div>
+      <div class="theme-options" id="themeOptions" style="display: none;">
+        <button class="theme-option" id="selectLightTheme" data-translate="Modo Claro">
+          <span>☀️</span> Modo Claro
+        </button>
+        <button class="theme-option" id="selectDarkTheme" data-translate="Modo Oscuro">
+          <span>🌙</span> Modo Oscuro
+        </button>
+      </div>
+
+      <!-- Cambiar Idioma -->
+      <div class="sidebar-item" id="languageToggle">
+        <span class="sidebar-icon">🌐</span>
+        <span class="sidebar-text" data-translate="Cambiar Idioma">Cambiar Idioma</span>
+        <span class="sidebar-arrow">›</span>
+      </div>
+      <div class="theme-options" id="languageOptions" style="display: none;">
+        <button class="theme-option" id="selectSpanish" data-translate="Español">
+          <span>🇵🇷</span> Español
+        </button>
+        <button class="theme-option" id="selectEnglish" data-translate="English">
+          <span>🇺🇸</span> English
+        </button>
+      </div>
+
+      <!-- Separador -->
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 1rem 0;"></div>
+
+      <!-- Dashboard Administrativo -->
+      <a href="admin.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">⚙️</span>
+        <span class="sidebar-text" data-translate="Dashboard Admin">Dashboard Admin</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-layout">
+        <div class="hero-text">
+          <h1>📚 Biblioteca Digital</h1>
+          <p>Tu centro de conocimiento y recursos educativos. Accede a nuestro catálogo en línea, reserva espacios de estudio y descubre recursos académicos de calidad.</p>
+          <div class="hero-actions">
+            <a href="#reserva" class="btn btn-primary">Reservar Espacio</a>
+            <a href="#recursos" class="btn btn-secondary">Ver Recursos</a>
+          </div>
+          <div class="hero-tags">
+            <span>📖 Catálogo Digital</span>
+            <span>💻 Reservas Online</span>
+            <span>🎓 Apoyo Académico</span>
+            <span>🌐 Recursos Globales</span>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <h2>🕐 Horario de Atención</h2>
+          <ul>
+            <li><strong>Lunes - Viernes:</strong> 7:30 AM - 4:00 PM</li>
+            <li><strong>Servicios:</strong> Préstamo de libros</li>
+            <li><strong>Computadoras:</strong> 8 estaciones disponibles</li>
+            <li><strong>Salas de estudio:</strong> Reserva anticipada</li>
+            <li><strong>Apoyo académico:</strong> Tutorías disponibles</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container" style="padding: 3rem 0;">
+
+    <!-- 1. RESERVA DE ESPACIOS -->
+    <section class="space-reservation-section">
+      <div class="container">
+        <div class="section-header" style="text-align: center; color: white;">
+          <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem;">📖 Reserva de Espacios</h2>
+          <p style="font-size: 1.2rem; opacity: 0.9;">Reserva salas, computadoras y equipos</p>
+        </div>
+
+        <div class="reservation-grid">
+          <div class="space-card" onclick="openReservationModal('Sala de Lectura')">
+            <div class="space-icon">📖</div>
+            <h3>Sala de Lectura</h3>
+            <p>Espacio tranquilo para estudio individual</p>
+            <span class="badge" style="background: #10b981; color: white; padding: 0.25rem 0.75rem; border-radius: 20px;">Disponible</span>
+          </div>
+
+          <div class="space-card" onclick="openReservationModal('Computadoras')">
+            <div class="space-icon">💻</div>
+            <h3>Computadoras</h3>
+            <p>Estaciones de trabajo con internet</p>
+            <span class="badge" style="background: #10b981; color: white; padding: 0.25rem 0.75rem; border-radius: 20px;">8 disponibles</span>
+          </div>
+
+          <div class="space-card" onclick="openReservationModal('Proyector')">
+            <div class="space-icon">📽️</div>
+            <h3>Proyector</h3>
+            <p>Para presentaciones y trabajos grupales</p>
+            <span class="badge" style="background: #f59e0b; color: white; padding: 0.25rem 0.75rem; border-radius: 20px;">Reservar</span>
+          </div>
+
+          <div class="space-card" onclick="openReservationModal('Sala de Presentaciones')">
+            <div class="space-icon">🎤</div>
+            <h3>Sala de Presentaciones</h3>
+            <p>Espacio para exposiciones y eventos</p>
+            <span class="badge" style="background: #10b981; color: white; padding: 0.25rem 0.75rem; border-radius: 20px;">Disponible</span>
+          </div>
+        </div>
+
+        <!-- Calendario de Reservas -->
+        <div class="calendar-container">
+          <div class="calendar-header">
+            <button class="calendar-nav-btn" onclick="previousMonth()">❮</button>
+            <h3 id="currentMonth" style="margin: 0; font-size: 1.5rem;">Febrero 2026</h3>
+            <button class="calendar-nav-btn" onclick="nextMonth()">❯</button>
+          </div>
+          
+          <div class="calendar-grid" id="calendarGrid">
+            <div class="calendar-day-header">Dom</div>
+            <div class="calendar-day-header">Lun</div>
+            <div class="calendar-day-header">Mar</div>
+            <div class="calendar-day-header">Mié</div>
+            <div class="calendar-day-header">Jue</div>
+            <div class="calendar-day-header">Vie</div>
+            <div class="calendar-day-header">Sáb</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. CENTRO DE APOYO ACADÉMICO -->
+    <section class="academic-support-section">
+      <div class="container">
+        <div class="section-header" style="text-align: center; color: white;">
+          <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem;">🧠 Centro de Apoyo Académico</h2>
+          <p style="font-size: 1.2rem; opacity: 0.9;">Tutorías, talleres y recursos de aprendizaje</p>
+        </div>
+
+        <div class="support-grid">
+          <div class="support-card">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">👨‍🏫</div>
+            <h3 style="color: #f5576c; margin-bottom: 1rem;">Tutorías Personalizadas</h3>
+            <ul style="text-align: left; line-height: 1.8;">
+              <li>Matemáticas y Ciencias</li>
+              <li>Español e Inglés</li>
+              <li>Estudios Sociales</li>
+              <li>Preparación para exámenes</li>
+            </ul>
+            <button class="btn btn-primary" style="margin-top: 1rem; background: #f5576c;">Solicitar Tutoría</button>
+          </div>
+
+          <div class="support-card">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🎓</div>
+            <h3 style="color: #f5576c; margin-bottom: 1rem;">Talleres y Seminarios</h3>
+            <ul style="text-align: left; line-height: 1.8;">
+              <li>Técnicas de Estudio</li>
+              <li>Redacción Académica</li>
+              <li>Investigación y Referencias</li>
+              <li>Habilidades Digitales</li>
+            </ul>
+            <button class="btn btn-primary" style="margin-top: 1rem; background: #f5576c;">Ver Calendario</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. RECURSOS EDUCATIVOS -->
+    <section id="recursos" style="margin: 3rem 0;">
+      <div class="section-header" style="text-align: center;">
+        <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem;">📘 Recursos Educativos</h2>
+        <p style="font-size: 1.2rem; color: #64748b;">Acceso a bibliotecas digitales y bases de datos</p>
+      </div>
+
+      <div class="resources-grid">
+        <a href="https://www.gutenberg.org/" target="_blank" class="resource-link-card">
+          <i class="fas fa-book"></i>
+          <h4>Project Gutenberg</h4>
+          <p style="font-size: 0.9rem; color: #64748b;">70,000+ libros gratis</p>
+        </a>
+
+        <a href="https://openlibrary.org/" target="_blank" class="resource-link-card">
+          <i class="fas fa-book-open"></i>
+          <h4>Open Library</h4>
+          <p style="font-size: 0.9rem; color: #64748b;">Millones de libros digitales</p>
+        </a>
+
+        <a href="https://www.khanacademy.org/" target="_blank" class="resource-link-card">
+          <i class="fas fa-graduation-cap"></i>
+          <h4>Khan Academy</h4>
+          <p style="font-size: 0.9rem; color: #64748b;">Cursos gratuitos</p>
+        </a>
+
+        <a href="https://scholar.google.com/" target="_blank" class="resource-link-card">
+          <i class="fas fa-search"></i>
+          <h4>Google Scholar</h4>
+          <p style="font-size: 0.9rem; color: #64748b;">Artículos académicos</p>
+        </a>
+
+        <a href="https://www.coursera.org/" target="_blank" class="resource-link-card">
+          <i class="fas fa-laptop"></i>
+          <h4>Coursera</h4>
+          <p style="font-size: 0.9rem; color: #64748b;">Cursos universitarios</p>
+        </a>
+
+        <a href="https://www.ted.com/" target="_blank" class="resource-link-card">
+          <i class="fas fa-video"></i>
+          <h4>TED Talks</h4>
+          <p style="font-size: 0.9rem; color: #64748b;">Charlas inspiradoras</p>
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Modal de Reserva -->
+  <div id="reserva" class="reservation-modal" id="reservationModal">
+    <div class="modal-content">
+      <h2 id="modalTitle" style="margin-bottom: 1.5rem; color: #667eea;">Reservar Espacio</h2>
+      <form id="reservationForm">
+        <div class="form-group">
+          <label>Nombre Completo</label>
+          <input type="text" required placeholder="Tu nombre">
+        </div>
+        <div class="form-group">
+          <label>Correo Electrónico</label>
+          <input type="email" required placeholder="tu@email.com">
+        </div>
+        <div class="form-group">
+          <label>Fecha</label>
+          <input type="date" required>
+        </div>
+        <div class="form-group">
+          <label>Hora de Inicio</label>
+          <input type="time" required>
+        </div>
+        <div class="form-group">
+          <label>Hora de Fin</label>
+          <input type="time" required>
+        </div>
+        <div class="form-group">
+          <label>Propósito</label>
+          <textarea rows="3" placeholder="Describe el propósito de la reserva"></textarea>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+          <button type="submit" class="btn btn-primary" style="flex: 1; background: #667eea;">Confirmar Reserva</button>
+          <button type="button" class="btn btn-secondary" style="flex: 1;" onclick="closeReservationModal()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="js/services-manager.js"></script>
+  <script>
+    // Hamburger menu functionality
+    (function () {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const closeSidebar = document.getElementById('closeSidebar');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+      const selectLightTheme = document.getElementById('selectLightTheme');
+      const selectDarkTheme = document.getElementById('selectDarkTheme');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+      const servicesToggle = document.getElementById('servicesToggle');
+      const servicesOptions = document.getElementById('servicesOptions');
+
+      function openSidebarMenu() {
+        sidebarMenu.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebarMenu() {
+        sidebarMenu.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        if (themeOptions) themeOptions.style.display = 'none';
+        if (languageOptions) languageOptions.style.display = 'none';
+      }
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openSidebarMenu);
+      }
+
+      if (closeSidebar) {
+        closeSidebar.addEventListener('click', closeSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+
+      // Services toggle
+      if (servicesToggle) {
+        servicesToggle.addEventListener('click', function () {
+          const isVisible = servicesOptions.style.display === 'block';
+          servicesOptions.style.display = isVisible ? 'none' : 'block';
+        });
+      }
+
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+          const isVisible = themeOptions.style.display === 'block';
+          themeOptions.style.display = isVisible ? 'none' : 'block';
+          languageOptions.style.display = 'none';
+        });
+      }
+
+      // Language toggle
+      if (languageToggle) {
+        languageToggle.addEventListener('click', function () {
+          const isVisible = languageOptions.style.display === 'block';
+          languageOptions.style.display = isVisible ? 'none' : 'block';
+          themeOptions.style.display = 'none';
+        });
+      }
+
+      // Select Light Theme
+      if (selectLightTheme) {
+        selectLightTheme.addEventListener('click', function () {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          closeSidebarMenu();
+        });
+      }
+
+      // Select Dark Theme
+      if (selectDarkTheme) {
+        selectDarkTheme.addEventListener('click', function () {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma español
+      if (selectSpanish) {
+        selectSpanish.addEventListener('click', function () {
+          localStorage.setItem('language', 'es');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'es');
+          if (typeof translatePage === 'function') {
+            translatePage('es');
+          }
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma inglés
+      if (selectEnglish) {
+        selectEnglish.addEventListener('click', function () {
+          localStorage.setItem('language', 'en');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'en');
+          if (typeof translatePage === 'function') {
+            translatePage('en');
+          }
+          closeSidebarMenu();
+        });
+      }
+    })();
+  </script>
+  <script>
+    // Calendario
+    let currentDate = new Date();
+
+    function initCalendar() {
+      renderCalendar();
+    }
+
+    function renderCalendar() {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      
+      const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+      document.getElementById('currentMonth').textContent = `${monthNames[month]} ${year}`;
+      
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      
+      const grid = document.getElementById('calendarGrid');
+      const headers = Array.from(grid.querySelectorAll('.calendar-day-header'));
+      grid.innerHTML = '';
+      headers.forEach(h => grid.appendChild(h));
+      
+      for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement('div');
+        grid.appendChild(empty);
+      }
+      
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayEl = document.createElement('div');
+        dayEl.className = 'calendar-day';
+        dayEl.textContent = day;
+        
+        const today = new Date();
+        if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+          dayEl.classList.add('today');
+        }
+        
+        grid.appendChild(dayEl);
+      }
+    }
+
+    function previousMonth() {
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      renderCalendar();
+    }
+
+    function nextMonth() {
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      renderCalendar();
+    }
+
+    // Modal de Reserva
+    function openReservationModal(spaceName) {
+      document.getElementById('modalTitle').textContent = `Reservar: ${spaceName}`;
+      document.getElementById('reservationModal').classList.add('active');
+    }
+
+    function closeReservationModal() {
+      document.getElementById('reservationModal').classList.remove('active');
+    }
+
+    document.getElementById('reservationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('✅ Reserva confirmada exitosamente');
+      closeReservationModal();
+      this.reset();
+    });
+
+    document.addEventListener('DOMContentLoaded', initCalendar);
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
