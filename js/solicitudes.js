@@ -8,6 +8,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const successMessage = document.getElementById('successMessage');
     const ticketIdDisplay = document.getElementById('ticketIdDisplay');
 
+    // --- Vista previa de licencia ---
+    const licenciaInput = document.getElementById('licenciaFoto');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    const licenciaPreview = document.getElementById('licenciaPreview');
+
+    if (licenciaInput) {
+        licenciaInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                fileNameDisplay.textContent = '✅ ' + file.name;
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    licenciaPreview.src = e.target.result;
+                    licenciaPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                fileNameDisplay.textContent = '';
+                licenciaPreview.style.display = 'none';
+                licenciaPreview.src = '';
+            }
+        });
+    }
+
     if (form) {
         form.addEventListener('submit', handleFormSubmit);
     }
@@ -61,6 +85,29 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('El número de estudiante debe contener solo números.');
             return false;
         }
+
+        // Validación de foto de licencia
+        const licenciaInput = document.getElementById('licenciaFoto');
+        if (!licenciaInput || !licenciaInput.files || licenciaInput.files.length === 0) {
+            alert('⚠️ Debe adjuntar una foto de su licencia o identificación oficial para continuar.');
+            licenciaInput && licenciaInput.focus();
+            return false;
+        }
+
+        const file = licenciaInput.files[0];
+        const maxSize = 5 * 1024 * 1024; // 5 MB
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+        if (!allowedTypes.includes(file.type)) {
+            alert('⚠️ El archivo debe ser una imagen en formato JPG, PNG o WEBP.');
+            return false;
+        }
+
+        if (file.size > maxSize) {
+            alert('⚠️ El archivo supera el tamaño máximo permitido de 5 MB.');
+            return false;
+        }
+
         return true;
     }
 

@@ -420,6 +420,18 @@ class ServiceManager {
     }
 
     /**
+     * Actualiza una noticia existente por ID.
+     */
+    updateNews(id, data) {
+        if (!this.data.news) return false;
+        const idx = this.data.news.findIndex(n => n.id === id);
+        if (idx === -1) return false;
+        this.data.news[idx] = { ...this.data.news[idx], ...data };
+        this.saveData();
+        return true;
+    }
+
+    /**
      * Elimina una noticia por ID.
      */
     deleteNews(id) {
