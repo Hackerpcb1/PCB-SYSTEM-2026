@@ -32,6 +32,16 @@
             background: rgba(56, 189, 248, 0.2) !important;
             color: #38BDF8 !important;
         }
+
+        body.dark-mode .taller-link-btn {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb) !important;
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .taller-link-btn:hover {
+            background: linear-gradient(135deg, #1e40af, #1d4ed8) !important;
+            color: #ffffff !important;
+        }
     </style>
     <style>
         .workshop-category {
@@ -90,6 +100,34 @@
             background: #fce4ec;
             color: #c2185b;
         }
+
+        .badge-enlinea {
+            background: #e0f7fa;
+            color: #00838f;
+        }
+
+        .taller-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: opacity 0.2s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .taller-link-btn:hover {
+            opacity: 0.88;
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
+        }
     </style>
 </head>
 
@@ -144,7 +182,7 @@
             </button>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="index.html#inicio">Inicio</a></li>
+                    <li><a href="index.html">Inicio</a></li>
                     <li><a href="index.html#servicios">Servicios</a></li>
                     <li><a href="index.html#contacto">Contacto</a></li>
                 </ul>
@@ -221,22 +259,26 @@
                     <p style="color: #7f8c8d; margin-bottom: 15px;">Protege a tu familia de riesgos en línea. Aprende
                         sobre privacidad, phishing y seguridad digital.</p>
                     <div style="margin-bottom: 15px;">
-                        <i class="fas fa-calendar"></i> <strong>Próximo:</strong> 15 de marzo, 2026<br>
+                        <i class="fas fa-globe"></i> <strong>Plataforma:</strong> e-mentores (PANIAMOR)<br>
                         <i class="fas fa-clock"></i> <strong>Duración:</strong> 2 horas
                     </div>
-                    <button class="btn btn-primary" onclick="registrarTaller('internet-seguro')">Registrarse</button>
+                    <a class="taller-link-btn" href="https://ementores.org/familias/" target="_blank" rel="noopener">
+                        <i class="fas fa-play-circle"></i> Ver Taller
+                    </a>
                 </div>
 
                 <div class="workshop-card">
-                    <span class="workshop-badge badge-presencial">Presencial</span>
+                    <span class="workshop-badge badge-enlinea">En Línea</span>
                     <h3 style="color: #2c3e50; margin-bottom: 10px;">Control Parental Efectivo</h3>
                     <p style="color: #7f8c8d; margin-bottom: 15px;">Herramientas y estrategias para supervisar el uso de
                         dispositivos de tus hijos.</p>
                     <div style="margin-bottom: 15px;">
-                        <i class="fas fa-calendar"></i> <strong>Próximo:</strong> 22 de marzo, 2026<br>
-                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 3 horas
+                        <i class="fas fa-globe"></i> <strong>Plataforma:</strong> INCIBE — IS4K<br>
+                        <i class="fas fa-star"></i> <strong>Acceso:</strong> Gratuito
                     </div>
-                    <button class="btn btn-primary" onclick="registrarTaller('control-parental')">Registrarse</button>
+                    <a class="taller-link-btn" href="https://www.incibe.es/menores/familias/formacion" target="_blank" rel="noopener">
+                        <i class="fas fa-external-link-alt"></i> Acceder Gratis
+                    </a>
                 </div>
 
                 <div class="workshop-card">
@@ -245,11 +287,12 @@
                     <p style="color: #7f8c8d; margin-bottom: 15px;">ChatGPT, herramientas educativas y cómo la IA puede
                         ayudar en el aprendizaje.</p>
                     <div style="margin-bottom: 15px;">
-                        <i class="fas fa-video"></i> <strong>Disponible:</strong> Ahora<br>
-                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 1.5 horas
+                        <i class="fas fa-globe"></i> <strong>Plataforma:</strong> Internet Matters<br>
+                        <i class="fas fa-star"></i> <strong>Acceso:</strong> Gratuito
                     </div>
-                    <button class="btn btn-primary" onclick="window.open('https://youtube.com', '_blank')">Ver
-                        Ahora</button>
+                    <a class="taller-link-btn" href="https://www.internetmatters.org/es/recursos/Gu%C3%ADa-para-padres-sobre-herramientas-de-inteligencia-artificial-(IA)/" target="_blank" rel="noopener">
+                        <i class="fas fa-play-circle"></i> Ver Ahora
+                    </a>
                 </div>
             </div>
         </div>
@@ -265,15 +308,17 @@
             </div>
             <div class="workshop-grid">
                 <div class="workshop-card">
-                    <span class="workshop-badge badge-presencial">Presencial</span>
+                    <span class="workshop-badge badge-enlinea">En Línea</span>
                     <h3 style="color: #2c3e50; margin-bottom: 10px;">Cómo Apoyar el Estudio en Casa</h3>
                     <p style="color: #7f8c8d; margin-bottom: 15px;">Técnicas de estudio, organización y creación de
-                        rutinas efectivas.</p>
+                        rutinas efectivas para apoyar a tu hijo/a.</p>
                     <div style="margin-bottom: 15px;">
-                        <i class="fas fa-calendar"></i> <strong>Próximo:</strong> 5 de abril, 2026<br>
-                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 2 horas
+                        <i class="fas fa-globe"></i> <strong>Plataforma:</strong> Khan Academy (Español)<br>
+                        <i class="fas fa-star"></i> <strong>Acceso:</strong> Gratuito
                     </div>
-                    <button class="btn btn-primary" onclick="registrarTaller('apoyo-estudio')">Registrarse</button>
+                    <a class="taller-link-btn" href="https://es.khanacademy.org/coaches" target="_blank" rel="noopener">
+                        <i class="fas fa-external-link-alt"></i> Acceder
+                    </a>
                 </div>
 
                 <div class="workshop-card">
@@ -282,22 +327,26 @@
                     <p style="color: #7f8c8d; margin-bottom: 15px;">Work-Based Learning: qué es, cómo funciona y cómo
                         preparar a tu hijo/a.</p>
                     <div style="margin-bottom: 15px;">
-                        <i class="fas fa-calendar"></i> <strong>Próximo:</strong> 12 de abril, 2026<br>
-                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 2.5 horas
+                        <i class="fas fa-globe"></i> <strong>Plataforma:</strong> Parent Network WNY<br>
+                        <i class="fas fa-star"></i> <strong>Acceso:</strong> Gratuito
                     </div>
-                    <button class="btn btn-primary" onclick="registrarTaller('wbl')">Registrarse</button>
+                    <a class="taller-link-btn" href="https://parentnetworkwny.org/es/what-is-work-based-learning/" target="_blank" rel="noopener">
+                        <i class="fas fa-external-link-alt"></i> Aprender Más
+                    </a>
                 </div>
 
                 <div class="workshop-card">
                     <span class="workshop-badge badge-virtual">Virtual</span>
                     <h3 style="color: #2c3e50; margin-bottom: 10px;">Preparación para Universidad</h3>
                     <p style="color: #7f8c8d; margin-bottom: 15px;">College Board, FAFSA, solicitudes y becas. Todo lo
-                        que necesitas saber.</p>
+                        que necesitas saber para el proceso universitario.</p>
                     <div style="margin-bottom: 15px;">
-                        <i class="fas fa-calendar"></i> <strong>Próximo:</strong> 19 de abril, 2026<br>
-                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 3 horas
+                        <i class="fas fa-globe"></i> <strong>Plataforma:</strong> StudentAid.gov (Español)<br>
+                        <i class="fas fa-star"></i> <strong>Acceso:</strong> Gratuito
                     </div>
-                    <button class="btn btn-primary" onclick="registrarTaller('universidad')">Registrarse</button>
+                    <a class="taller-link-btn" href="https://studentaid.gov/h/apply-for-aid/fafsa" target="_blank" rel="noopener">
+                        <i class="fas fa-university"></i> Aplicar FAFSA
+                    </a>
                 </div>
             </div>
         </div>
@@ -313,56 +362,52 @@
             </div>
             <div class="workshop-grid">
                 <div class="workshop-card">
-                    <span class="workshop-badge badge-presencial">Presencial</span>
+                    <span class="workshop-badge badge-enlinea">En Línea</span>
                     <h3 style="color: #2c3e50; margin-bottom: 10px;">Manejo del Estrés Parental</h3>
                     <p style="color: #7f8c8d; margin-bottom: 15px;">Técnicas de relajación, mindfulness y autocuidado
                         para padres ocupados.</p>
                     <div style="margin-bottom: 15px;">
-                        <i class="fas fa-calendar"></i> <strong>Próximo:</strong> 26 de abril, 2026<br>
-                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 2 horas
+                        <i class="fas fa-globe"></i> <strong>Plataforma:</strong> Vivir Mindfulness<br>
+                        <i class="fas fa-star"></i> <strong>Acceso:</strong> En línea
                     </div>
-                    <button class="btn btn-primary" onclick="registrarTaller('estres')">Registrarse</button>
+                    <a class="taller-link-btn" href="https://vivirmindfulness.com/talleres/taller-mindfulness-gestionar-estres-crianza" target="_blank" rel="noopener">
+                        <i class="fas fa-external-link-alt"></i> Ver Taller
+                    </a>
                 </div>
 
                 <div class="workshop-card">
                     <span class="workshop-badge badge-virtual">Virtual</span>
                     <h3 style="color: #2c3e50; margin-bottom: 10px;">Comunicación con Adolescentes</h3>
                     <p style="color: #7f8c8d; margin-bottom: 15px;">Estrategias para mantener diálogo abierto y
-                        constructivo con tus hijos.</p>
+                        constructivo con tus hijos adolescentes.</p>
                     <div style="margin-bottom: 15px;">
-                        <i class="fas fa-calendar"></i> <strong>Próximo:</strong> 3 de mayo, 2026<br>
-                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 2 horas
+                        <i class="fas fa-globe"></i> <strong>Plataforma:</strong> Programa Bienestar<br>
+                        <i class="fas fa-star"></i> <strong>Acceso:</strong> 100% Gratuito
                     </div>
-                    <button class="btn btn-primary" onclick="registrarTaller('comunicacion')">Registrarse</button>
+                    <a class="taller-link-btn" href="https://programabienestar.es/" target="_blank" rel="noopener">
+                        <i class="fas fa-external-link-alt"></i> Acceder Gratis
+                    </a>
                 </div>
 
                 <div class="workshop-card">
                     <span class="workshop-badge badge-grabado">Grabado</span>
                     <h3 style="color: #2c3e50; margin-bottom: 10px;">Salud Mental Familiar</h3>
                     <p style="color: #7f8c8d; margin-bottom: 15px;">Reconocer señales de alerta, recursos disponibles y
-                        cómo buscar ayuda.</p>
+                        cómo buscar ayuda profesional.</p>
                     <div style="margin-bottom: 15px;">
-                        <i class="fas fa-video"></i> <strong>Disponible:</strong> Ahora<br>
-                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 1 hora
+                        <i class="fas fa-globe"></i> <strong>Plataforma:</strong> MedlinePlus (NIH)<br>
+                        <i class="fas fa-star"></i> <strong>Acceso:</strong> Gratuito
                     </div>
-                    <button class="btn btn-primary" onclick="window.open('https://youtube.com', '_blank')">Ver
-                        Ahora</button>
+                    <a class="taller-link-btn" href="https://medlineplus.gov/spanish/childrensmentalhealth.html" target="_blank" rel="noopener">
+                        <i class="fas fa-play-circle"></i> Ver Recurso
+                    </a>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <script>
-        function registrarTaller(taller) {
-            // Simulación de registro
-            const confirmacion = confirm(`¿Deseas registrarte para este taller?\n\nRecibirás un correo de confirmación con los detalles.`);
-            if (confirmacion) {
-                alert(`✅ ¡Registro exitoso!\n\nTe hemos enviado un correo de confirmación.\nRecuerda revisar tu bandeja de entrada.`);
-                // Aquí se integraría con el sistema de registro real
-            }
-        }
-    </script>
+
 
     <script src="js/services-manager.js"></script>
 </body>

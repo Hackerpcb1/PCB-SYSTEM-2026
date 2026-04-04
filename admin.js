@@ -4,11 +4,6 @@
 
   // Configuration
   const SECTIONS = {
-    biblioteca: {
-      title: 'Gestión de Biblioteca',
-      folder: 'galeriabiblioteca',
-      page: 'biblioteca.html'
-    },
     comedor: {
       title: 'Gestión de Comedor',
       folder: 'galeriacomedor',
@@ -28,13 +23,22 @@
       title: 'Configuración del Bot de Avisos',
       folder: null,
       page: null
+    },
+    novedades: {
+      title: 'Gestión de Novedades',
+      folder: null,
+      page: null
     }
   };
 
   // State
-  let currentSection = 'biblioteca';
+  let currentSection = 'comedor';
   let contentData = {};
   let imageToDelete = null;
+  let recToEditIndex = null;
+  let newsToEditId = null;
+  let botItemToEdit = null;
+  let galleryItemToEdit = null; // { id, folder } of gallery item being edited
 
   // DOM Elements
   const navButtons = document.querySelectorAll('.nav-btn');
@@ -60,8 +64,45 @@
   const btnConfirmDelete = document.getElementById('btnConfirmDelete');
   const btnCancelDelete = document.getElementById('btnCancelDelete');
   const botConfigSection = document.getElementById('botConfigSection');
+  const novedadesSection = document.getElementById('novedadesSection');
   const botItemsList = document.getElementById('botItemsList');
   const btnSaveBotConfig = document.getElementById('btnSaveBotConfig');
+
+  // Edit news modal
+  const editNewsModal = document.getElementById('editNewsModal');
+  const editNewsTitle = document.getElementById('editNewsTitle');
+  const editNewsMessage = document.getElementById('editNewsMessage');
+  const editNewsImageUrl = document.getElementById('editNewsImageUrl');
+  const btnSaveNewsEdit = document.getElementById('btnSaveNewsEdit');
+  const btnCancelNewsEdit = document.getElementById('btnCancelNewsEdit');
+
+  // Edit gallery item modal
+  const editGalleryItemModal = document.getElementById('editGalleryItemModal');
+  const editGalleryTitle = document.getElementById('editGalleryTitle');
+  const editGalleryDesc = document.getElementById('editGalleryDesc');
+  const editGalleryImgPreview = document.getElementById('editGalleryImgPreview');
+  const editGalleryImgFile = document.getElementById('editGalleryImgFile');
+  const btnSaveGalleryEdit = document.getElementById('btnSaveGalleryEdit');
+  const btnCancelGalleryEdit = document.getElementById('btnCancelGalleryEdit');
+
+  // Edit bot item modal
+  const editBotItemModal = document.getElementById('editBotItemModal');
+  const editBotTitle = document.getElementById('editBotTitle');
+  const editBotDesc = document.getElementById('editBotDesc');
+  const editBotImgPreview = document.getElementById('editBotImgPreview');
+  const editBotImgFile = document.getElementById('editBotImgFile');
+  const btnSaveBotItemEdit = document.getElementById('btnSaveBotItemEdit');
+  const btnCancelBotItemEdit = document.getElementById('btnCancelBotItemEdit');
+
+  // Recomendaciones del comedor
+  const recomendacionesAdminSection = document.getElementById('recomendacionesAdminSection');
+  const recomendacionesAdminList = document.getElementById('recomendacionesAdminList');
+  const recCount = document.getElementById('recCount');
+  const editRecModal = document.getElementById('editRecModal');
+  const editRecNombre = document.getElementById('editRecNombre');
+  const editRecTexto = document.getElementById('editRecTexto');
+  const btnSaveRecEdit = document.getElementById('btnSaveRecEdit');
+  const btnCancelRecEdit = document.getElementById('btnCancelRecEdit');
 
   // Upload method state
   let uploadMethod = 'file'; // 'file' or 'url'
@@ -289,7 +330,7 @@
     if (section === 'comedor') {
       btnEditMenu.style.display = 'inline-block';
       btnAddImage.style.display = 'inline-block';
-    } else if (section === 'bot') {
+    } else if (section === 'bot' || section === 'novedades') {
       btnEditMenu.style.display = 'none';
       btnAddImage.style.display = 'none';
     } else {
@@ -302,10 +343,27 @@
       galleryGrid.style.display = 'none';
       emptyState.style.display = 'none';
       botConfigSection.style.display = 'block';
+      recomendacionesAdminSection.style.display = 'none';
+      novedadesSection.style.display = 'none';
       renderBotConfig();
+    } else if (section === 'novedades') {
+      galleryGrid.style.display = 'none';
+      emptyState.style.display = 'none';
+      botConfigSection.style.display = 'none';
+      recomendacionesAdminSection.style.display = 'none';
+      novedadesSection.style.display = 'block';
+      renderNovedades();
+    } else if (section === 'comedor') {
+      galleryGrid.style.display = 'grid';
+      botConfigSection.style.display = 'none';
+      recomendacionesAdminSection.style.display = 'block';
+      novedadesSection.style.display = 'none';
+      renderRecomendaciones();
     } else {
       galleryGrid.style.display = 'grid';
       botConfigSection.style.display = 'none';
+      recomendacionesAdminSection.style.display = 'none';
+      novedadesSection.style.display = 'none';
     }
 
     // Hide forms and render gallery
@@ -546,6 +604,10 @@
               </div>
               <div class="gallery-item-actions">
                 ${menuButton}
+                <button class="btn-icon" onclick="adminApp.editGalleryItem('${item.id}')" title="Editar"
+                  style="background:#f0f4ff; color:#667eea;">
+                  ✏️
+                </button>
                 <button class="btn-icon delete" onclick="adminApp.deleteImage('${item.id}')" title="Eliminar">
                   🗑️
                 </button>
@@ -638,20 +700,166 @@
     const selectedIds = botConfig.selectedIds || [];
 
     botItemsList.innerHTML = allItems.map(item => `
-      <div class="bot-item">
+      <div class="bot-item" style="display:flex; align-items:center; gap:0.8rem; padding:0.75rem; border:1px solid #e8ecf0; border-radius:10px; margin-bottom:0.6rem; background:#fafbfc;">
         <input
           type="checkbox"
           class="bot-item-checkbox"
           data-item-id="${item.id}"
           ${selectedIds.includes(item.id) ? 'checked' : ''}
+          style="width:18px; height:18px; flex-shrink:0; cursor:pointer;"
         >
-        <img src="${item.base64 || item.path}" alt="${item.title}" class="bot-item-preview" onerror="this.style.display='none'">
-        <div class="bot-item-info">
-          <h4>${item.title || 'Sin título'}</h4>
-          <p>${item.description || 'Sin descripción'}</p>
+        <img src="${item.base64 || item.path}" alt="${item.title}" class="bot-item-preview"
+          style="width:56px; height:56px; object-fit:cover; border-radius:8px; flex-shrink:0;"
+          onerror="this.style.display='none'">
+        <div class="bot-item-info" style="flex:1; min-width:0;">
+          <h4 style="margin:0 0 0.2rem; color:#2c3e50; font-size:0.95rem;">${item.title || 'Sin título'}</h4>
+          <p style="margin:0; color:#7f8c8d; font-size:0.85rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${item.description || 'Sin descripción'}</p>
         </div>
+        <button onclick="adminApp.editBotItem('${item.id}')" title="Editar"
+          style="background:#f0f4ff; color:#667eea; border:none; border-radius:7px; padding:0.5rem 0.75rem; cursor:pointer; font-size:1rem; flex-shrink:0; transition:background 0.2s;"
+          onmouseover="this.style.background='#667eea';this.style.color='white'"
+          onmouseout="this.style.background='#f0f4ff';this.style.color='#667eea'">✏️</button>
+        <button onclick="adminApp.deleteBotItem('${item.id}')" title="Eliminar"
+          style="background:#fff0f0; color:#e74c3c; border:none; border-radius:7px; padding:0.5rem 0.75rem; cursor:pointer; font-size:1rem; flex-shrink:0; transition:background 0.2s;"
+          onmouseover="this.style.background='#e74c3c';this.style.color='white'"
+          onmouseout="this.style.background='#fff0f0';this.style.color='#e74c3c'">🗑️</button>
       </div>
     `).join('');
+  }
+
+  // ── Editar ítem de galería (comedor, promociones, etc.) ─────────────────
+
+  function editGalleryItem(id) {
+    let found = null;
+    let foundFolder = null;
+    for (const folder of Object.keys(contentData)) {
+      if (!Array.isArray(contentData[folder])) continue;
+      const item = contentData[folder].find(i => i.id === id);
+      if (item) { found = item; foundFolder = folder; break; }
+    }
+    if (!found) return;
+    galleryItemToEdit = { id, folder: foundFolder };
+    editGalleryTitle.value = found.title || '';
+    editGalleryDesc.value = found.description || '';
+    editGalleryImgFile.value = '';
+    const src = found.base64 || found.url || found.path || '';
+    editGalleryImgPreview.innerHTML = src
+      ? `<img src="${src}" style="max-width:100%; max-height:140px; border-radius:8px; border:1px solid #e2e8f0;">`
+      : `<p style="color:#95a5a6; font-size:0.9rem;">Sin imagen</p>`;
+    editGalleryItemModal.classList.add('active');
+  }
+
+  function closeGalleryItemModal() {
+    editGalleryItemModal.classList.remove('active');
+    galleryItemToEdit = null;
+    editGalleryTitle.value = '';
+    editGalleryDesc.value = '';
+    editGalleryImgPreview.innerHTML = '';
+    editGalleryImgFile.value = '';
+  }
+
+  function saveGalleryItemEdit() {
+    if (!galleryItemToEdit) return;
+    const title = editGalleryTitle.value.trim();
+    const desc = editGalleryDesc.value.trim();
+    if (!title) { alert('⚠️ El título no puede estar vacío.'); return; }
+
+    function applyGalleryEdit(newBase64) {
+      const { id, folder } = galleryItemToEdit;
+      const idx = contentData[folder].findIndex(i => i.id === id);
+      if (idx !== -1) {
+        contentData[folder][idx].title = title;
+        contentData[folder][idx].description = desc;
+        if (newBase64) contentData[folder][idx].base64 = newBase64;
+      }
+      saveContentData();
+      closeGalleryItemModal();
+      renderGallery();
+      alert('✅ Imagen actualizada correctamente.');
+    }
+
+    const file = editGalleryImgFile.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => applyGalleryEdit(e.target.result);
+      reader.readAsDataURL(file);
+    } else {
+      applyGalleryEdit(null);
+    }
+  }
+
+  // ── Editar ítem del bot ──────────────────────────────────────────────────
+
+  function editBotItem(id) {
+    const avisos = contentData.avisos || [];
+    const promociones = contentData.promociones || [];
+    const allItems = [...avisos, ...promociones];
+    const item = allItems.find(i => i.id === id);
+    if (!item) return;
+
+    botItemToEdit = item;
+    editBotTitle.value = item.title || '';
+    editBotDesc.value = item.description || '';
+    editBotImgFile.value = '';
+
+    const src = item.base64 || item.path || '';
+    editBotImgPreview.innerHTML = src
+      ? `<img src="${src}" style="max-width:100%; max-height:140px; border-radius:8px; border:1px solid #e2e8f0;">`
+      : `<p style="color:#95a5a6; font-size:0.9rem;">Sin imagen</p>`;
+
+    editBotItemModal.classList.add('active');
+  }
+
+  function closeBotItemModal() {
+    editBotItemModal.classList.remove('active');
+    botItemToEdit = null;
+    editBotTitle.value = '';
+    editBotDesc.value = '';
+    editBotImgPreview.innerHTML = '';
+    editBotImgFile.value = '';
+  }
+
+  function saveBotItemEdit() {
+    if (!botItemToEdit) return;
+    const title = editBotTitle.value.trim();
+    const desc = editBotDesc.value.trim();
+    if (!title) { alert('⚠️ El título no puede estar vacío.'); return; }
+
+    function applyEdit(newBase64) {
+      // Update in avisos or promociones
+      ['avisos', 'promociones'].forEach(folder => {
+        if (!contentData[folder]) return;
+        const idx = contentData[folder].findIndex(i => i.id === botItemToEdit.id);
+        if (idx !== -1) {
+          contentData[folder][idx].title = title;
+          contentData[folder][idx].description = desc;
+          if (newBase64) contentData[folder][idx].base64 = newBase64;
+        }
+      });
+      localStorage.setItem('pcb_content_data', JSON.stringify(contentData));
+      closeBotItemModal();
+      renderBotConfig();
+      alert('✅ Cambios guardados correctamente.');
+    }
+
+    const file = editBotImgFile.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => applyEdit(e.target.result);
+      reader.readAsDataURL(file);
+    } else {
+      applyEdit(null);
+    }
+  }
+
+  function deleteBotItem(id) {
+    if (!confirm('¿Eliminar este aviso/promoción? Esta acción no se puede deshacer.')) return;
+    ['avisos', 'promociones'].forEach(folder => {
+      if (!contentData[folder]) return;
+      contentData[folder] = contentData[folder].filter(i => i.id !== id);
+    });
+    saveContentData();
+    renderBotConfig();
   }
 
   // Save bot configuration
@@ -695,7 +903,210 @@
     }
   }
 
-  // Setup event listeners
+  // ── Gestión de Novedades ────────────────────────────────────────────────
+
+  function renderNovedades() {
+    const newsList = document.getElementById('newsList');
+    const newsForm = document.getElementById('newsForm');
+    if (!newsList || !newsForm) return;
+
+    function renderNews() {
+      if (!window.serviceManager) {
+        newsList.innerHTML = '<li style="color:#e74c3c; padding:10px;">⚠️ Error: services-manager no disponible.</li>';
+        return;
+      }
+      const allNews = window.serviceManager.getAllNews();
+      if (allNews.length === 0) {
+        newsList.innerHTML = '<li style="color:#95a5a6; padding:10px;">No hay noticias activas.</li>';
+        return;
+      }
+      const sorted = [...allNews].sort((a, b) => new Date(b.date) - new Date(a.date));
+      newsList.innerHTML = sorted.map((news, i) => `
+        <li style="padding:15px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; background:${i === 0 ? '#f0f9ff' : 'transparent'};">
+          <div style="display:flex; align-items:center; gap:15px;">
+            ${news.imageUrl
+              ? `<img src="${news.imageUrl}" style="width:50px; height:50px; object-fit:cover; border-radius:6px;">`
+              : `<div style="width:50px; height:50px; background:#eee; border-radius:6px; display:flex; align-items:center; justify-content:center;">📷</div>`}
+            <div>
+              <strong style="color:#2c3e50;">${news.title}</strong>
+              ${i === 0 ? '<span style="background:#2ecc71; color:white; padding:2px 6px; border-radius:4px; font-size:0.7rem; margin-left:5px;">ACTIVA</span>' : ''}
+              <p style="margin:0; color:#7f8c8d; font-size:0.9rem;">${news.message}</p>
+              <small style="color:#95a5a6;">${new Date(news.date).toLocaleDateString()} ${new Date(news.date).toLocaleTimeString()}</small>
+            </div>
+          </div>
+          <div style="display:flex; gap:0.4rem;">
+            <button onclick="adminApp.editNews('${news.id}')"
+              style="background:#f0f4ff; color:#667eea; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:1rem;"
+              onmouseover="this.style.background='#667eea';this.style.color='white'"
+              onmouseout="this.style.background='#f0f4ff';this.style.color='#667eea'">✏️</button>
+            <button onclick="adminApp.deleteNews('${news.id}')"
+              style="background:#fff0f0; color:#e74c3c; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:1rem;"
+              onmouseover="this.style.background='#e74c3c';this.style.color='white'"
+              onmouseout="this.style.background='#fff0f0';this.style.color='#e74c3c'">🗑️</button>
+          </div>
+        </li>
+      `).join('');
+    }
+
+    // Bind submit only once
+    if (!newsForm._bound) {
+      newsForm._bound = true;
+      newsForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!window.serviceManager) return;
+        const title = document.getElementById('newsTitle').value;
+        const message = document.getElementById('newsMessage').value;
+        const imageUrl = document.getElementById('newsImage').value;
+        window.serviceManager.addNews({ title, message, imageUrl });
+        newsForm.reset();
+        renderNews();
+        alert('✅ Noticia publicada. Aparecerá en el popup de la página principal.');
+      });
+    }
+
+    renderNews();
+  }
+
+  function editNews(id) {
+    if (!window.serviceManager) return;
+    const all = window.serviceManager.getAllNews();
+    const news = all.find(n => n.id === id);
+    if (!news) return;
+    newsToEditId = id;
+    editNewsTitle.value = news.title || '';
+    editNewsMessage.value = news.message || '';
+    editNewsImageUrl.value = news.imageUrl || '';
+    editNewsModal.classList.add('active');
+  }
+
+  function closeNewsModal() {
+    editNewsModal.classList.remove('active');
+    newsToEditId = null;
+    editNewsTitle.value = '';
+    editNewsMessage.value = '';
+    editNewsImageUrl.value = '';
+  }
+
+  function saveNewsEdit() {
+    if (!newsToEditId || !window.serviceManager) return;
+    const title = editNewsTitle.value.trim();
+    const message = editNewsMessage.value.trim();
+    if (!title || !message) { alert('⚠️ El título y el mensaje son obligatorios.'); return; }
+    window.serviceManager.updateNews(newsToEditId, {
+      title,
+      message,
+      imageUrl: editNewsImageUrl.value.trim()
+    });
+    closeNewsModal();
+    renderNovedades();
+  }
+
+  function deleteNews(id) {
+    if (!window.serviceManager) return;
+    if (confirm('¿Seguro que deseas eliminar esta noticia?')) {
+      window.serviceManager.deleteNews(id);
+      renderNovedades();
+    }
+  }
+
+  // ── Recomendaciones del Comedor ─────────────────────────────────────────
+
+  const REC_KEY = 'comedor_recomendaciones';
+
+  function getRecomendaciones() {
+    return JSON.parse(localStorage.getItem(REC_KEY) || '[]');
+  }
+
+  function saveRecomendaciones(data) {
+    localStorage.setItem(REC_KEY, JSON.stringify(data));
+  }
+
+  function formatRecDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  function renderRecomendaciones() {
+    const recs = getRecomendaciones();
+    recCount.textContent = recs.length;
+
+    if (recs.length === 0) {
+      recomendacionesAdminList.innerHTML = `
+        <div style="text-align:center; color:#95a5a6; padding:2rem;">
+          <p style="font-size:2rem;">💬</p>
+          <p>No hay recomendaciones todavía.</p>
+        </div>`;
+      return;
+    }
+
+    recomendacionesAdminList.innerHTML = recs.map((r, i) => `
+      <div style="display:flex; gap:1rem; align-items:flex-start; padding:1rem; border:1px solid #e8ecf0; border-radius:10px; margin-bottom:0.8rem; background:#fafbfc;">
+        <div style="width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg,#667eea,#764ba2); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:1.1rem; flex-shrink:0;">
+          ${r.nombre.charAt(0).toUpperCase()}
+        </div>
+        <div style="flex:1; min-width:0;">
+          <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap; margin-bottom:0.3rem;">
+            <strong style="color:#2c3e50;">${r.nombre}</strong>
+            <span style="font-size:0.78rem; color:#95a5a6;">${formatRecDate(r.fecha)}</span>
+          </div>
+          <p style="margin:0; color:#555; font-size:0.93rem; line-height:1.5;">${r.texto}</p>
+        </div>
+        <div style="display:flex; gap:0.4rem; flex-shrink:0;">
+          <button onclick="adminApp.editRecomendacion(${i})" title="Editar"
+            style="background:#f0f4ff; color:#667eea; border:none; border-radius:7px; padding:0.45rem 0.7rem; cursor:pointer; font-size:0.95rem; transition:background 0.2s;"
+            onmouseover="this.style.background='#667eea';this.style.color='white'"
+            onmouseout="this.style.background='#f0f4ff';this.style.color='#667eea'">✏️</button>
+          <button onclick="adminApp.deleteRecomendacion(${i})" title="Eliminar"
+            style="background:#fff0f0; color:#e74c3c; border:none; border-radius:7px; padding:0.45rem 0.7rem; cursor:pointer; font-size:0.95rem; transition:background 0.2s;"
+            onmouseover="this.style.background='#e74c3c';this.style.color='white'"
+            onmouseout="this.style.background='#fff0f0';this.style.color='#e74c3c'">🗑️</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function deleteRecomendacion(index) {
+    if (!confirm('¿Eliminar esta recomendación? Esta acción no se puede deshacer.')) return;
+    const recs = getRecomendaciones();
+    recs.splice(index, 1);
+    saveRecomendaciones(recs);
+    renderRecomendaciones();
+  }
+
+  function editRecomendacion(index) {
+    const recs = getRecomendaciones();
+    const rec = recs[index];
+    if (!rec) return;
+    recToEditIndex = index;
+    editRecNombre.value = rec.nombre;
+    editRecTexto.value = rec.texto;
+    editRecModal.classList.add('active');
+  }
+
+  function saveRecEdit() {
+    if (recToEditIndex === null) return;
+    const nombre = editRecNombre.value.trim();
+    const texto = editRecTexto.value.trim();
+    if (!nombre || !texto) {
+      alert('⚠️ El nombre y la recomendación no pueden estar vacíos.');
+      return;
+    }
+    const recs = getRecomendaciones();
+    recs[recToEditIndex].nombre = nombre;
+    recs[recToEditIndex].texto = texto;
+    saveRecomendaciones(recs);
+    closeEditRecModal();
+    renderRecomendaciones();
+  }
+
+  function closeEditRecModal() {
+    editRecModal.classList.remove('active');
+    recToEditIndex = null;
+    editRecNombre.value = '';
+    editRecTexto.value = '';
+  }
+
+  // ── Setup event listeners
   const originalSetupEventListeners = setupEventListeners;
   setupEventListeners = function () {
     originalSetupEventListeners();
@@ -704,12 +1115,47 @@
     if (btnSaveBotConfig) {
       btnSaveBotConfig.addEventListener('click', saveBotConfig);
     }
+
+    // Edit news modal
+    if (btnSaveNewsEdit) btnSaveNewsEdit.addEventListener('click', saveNewsEdit);
+    if (btnCancelNewsEdit) btnCancelNewsEdit.addEventListener('click', closeNewsModal);
+    if (editNewsModal) editNewsModal.addEventListener('click', e => { if (e.target === editNewsModal) closeNewsModal(); });
+
+    // Edit gallery item modal
+    if (btnSaveGalleryEdit) btnSaveGalleryEdit.addEventListener('click', saveGalleryItemEdit);
+    if (btnCancelGalleryEdit) btnCancelGalleryEdit.addEventListener('click', closeGalleryItemModal);
+    if (editGalleryItemModal) editGalleryItemModal.addEventListener('click', e => { if (e.target === editGalleryItemModal) closeGalleryItemModal(); });
+
+    // Edit bot item modal
+    if (btnSaveBotItemEdit) btnSaveBotItemEdit.addEventListener('click', saveBotItemEdit);
+    if (btnCancelBotItemEdit) btnCancelBotItemEdit.addEventListener('click', closeBotItemModal);
+    if (editBotItemModal) editBotItemModal.addEventListener('click', e => { if (e.target === editBotItemModal) closeBotItemModal(); });
+
+    // Edit recommendation modal
+    if (btnSaveRecEdit) {
+      btnSaveRecEdit.addEventListener('click', saveRecEdit);
+    }
+    if (btnCancelRecEdit) {
+      btnCancelRecEdit.addEventListener('click', closeEditRecModal);
+    }
+    if (editRecModal) {
+      editRecModal.addEventListener('click', (e) => {
+        if (e.target === editRecModal) closeEditRecModal();
+      });
+    }
   };
 
   // Export functions for global access
   window.adminApp = {
     deleteImage,
-    setMenuImage
+    setMenuImage,
+    deleteRecomendacion,
+    editRecomendacion,
+    deleteNews,
+    editNews,
+    editBotItem,
+    deleteBotItem,
+    editGalleryItem
   };
 
   // Start the app

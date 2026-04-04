@@ -299,6 +299,65 @@
       color: #9ca3af !important;
     }
 
+    /* ===== RECOMENDACIONES ===== */
+    .rec-form-card { border-left: 4px solid #9b59b6; max-width: 900px; margin: 0 auto 2rem; }
+    .rec-section-title { font-size: 1.4rem; font-weight: 700; color: #2c3e50; margin-bottom: 0.5rem; }
+    .rec-subtitle { color: #7f8c8d; font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .rec-input {
+      width: 100%; padding: 0.75rem 1rem; border: 2px solid #e9ecef;
+      border-radius: 10px; font-size: 1rem; font-family: inherit;
+      transition: border-color 0.2s; margin-bottom: 0.85rem; box-sizing: border-box;
+    }
+    .rec-input:focus  { outline: none; border-color: #9b59b6; box-shadow: 0 0 0 3px rgba(155,89,182,0.1); }
+    .rec-textarea {
+      width: 100%; padding: 0.75rem 1rem; border: 2px solid #e9ecef;
+      border-radius: 10px; font-size: 1rem; font-family: inherit;
+      resize: vertical; transition: border-color 0.2s; margin-bottom: 0.85rem; box-sizing: border-box;
+    }
+    .rec-textarea:focus { outline: none; border-color: #9b59b6; box-shadow: 0 0 0 3px rgba(155,89,182,0.1); }
+    .rec-submit-btn {
+      background: linear-gradient(135deg, #9b59b6, #8e44ad);
+      color: white; border: none; padding: 0.85rem 2rem; border-radius: 50px;
+      font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s;
+      display: inline-flex; align-items: center; gap: 8px; font-family: inherit;
+    }
+    .rec-submit-btn:hover {
+      background: linear-gradient(135deg, #8e44ad, #7d3c98);
+      transform: translateY(-2px); box-shadow: 0 6px 20px rgba(155,89,182,0.4);
+    }
+    .rec-cards-wrapper { max-width: 900px; margin: 0 auto; }
+    .rec-cards-header { font-size: 1.3rem; font-weight: 700; color: #2c3e50; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 2px solid #f1f5f9; }
+    .rec-card {
+      background: #f8f9fa; border-radius: 14px; padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem; border-left: 4px solid #9b59b6;
+      display: flex; gap: 1rem; align-items: flex-start; transition: box-shadow 0.2s;
+    }
+    .rec-card:hover { box-shadow: 0 4px 16px rgba(155,89,182,0.12); }
+    .rec-avatar {
+      width: 46px; height: 46px; border-radius: 50%;
+      background: linear-gradient(135deg, #9b59b6, #8e44ad);
+      color: white; display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; font-weight: 800; flex-shrink: 0;
+    }
+    .rec-body { flex: 1; min-width: 0; }
+    .rec-name { font-weight: 700; color: #2c3e50; font-size: 0.95rem; margin-bottom: 0.3rem; }
+    .rec-text { color: #555; font-size: 0.93rem; line-height: 1.65; margin-bottom: 0.3rem; word-wrap: break-word; }
+    .rec-date { font-size: 0.78rem; color: #94a3b8; }
+    .rec-empty { text-align: center; padding: 2.5rem 1rem; color: #94a3b8; background: #f8fafc; border-radius: 12px; }
+    .rec-empty-icon { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; }
+
+    body.dark-mode .rec-section-title  { color: #e5e7eb; }
+    body.dark-mode .rec-subtitle       { color: #9ca3af; }
+    body.dark-mode .rec-input,
+    body.dark-mode .rec-textarea       { background: rgba(15,23,42,0.8); border-color: #334155; color: #e5e7eb; }
+    body.dark-mode .rec-input:focus,
+    body.dark-mode .rec-textarea:focus { border-color: #9b59b6; }
+    body.dark-mode .rec-cards-header   { color: #e5e7eb; border-color: #334155; }
+    body.dark-mode .rec-card           { background: rgba(30,41,59,0.8); }
+    body.dark-mode .rec-name           { color: #e5e7eb; }
+    body.dark-mode .rec-text           { color: #9ca3af; }
+    body.dark-mode .rec-empty          { background: rgba(15,23,42,0.5); }
+
     /* Responsive */
     @media (max-width: 768px) {
       .survey-card {
@@ -477,9 +536,7 @@
         <a href="seguridad.html" class="theme-option">
           <span>🛡️</span> Seguridad
         </a>
-        <a href="evidencia.html" class="theme-option">
-          <span>📊</span> Dashboard Evidencia
-        </a>
+
       </div>
 
       <a href="participacion-comunitaria.html" class="sidebar-item sidebar-link">
@@ -772,8 +829,8 @@
               <i class="fas fa-info-circle"></i> Info Nutricional
             </button>
             <button class="btn btn-primary"
-              onclick="document.getElementById('surveySection').style.display='block'; document.getElementById('surveySection').scrollIntoView({behavior: 'smooth'})">
-              <i class="fas fa-poll"></i> Evaluar Comedor
+              onclick="document.getElementById('recomendacionesSection').scrollIntoView({behavior:'smooth'})">
+              <i class="fas fa-comment-dots"></i> Recomendar
             </button>
           </div>
 
@@ -783,252 +840,106 @@
           </p>
         </article>
 
-        <!-- Encuesta de Satisfacción Mejorada -->
-        <article class="card survey-card" id="surveySection" style="display: none;">
-          <div class="survey-header">
-            <div class="survey-icon">📋</div>
-            <h3>Encuesta de Satisfacción del Comedor</h3>
-            <p>Tu opinión es muy importante para mejorar nuestro servicio. Por favor, evalúa los siguientes aspectos:
-            </p>
+        <!-- Sección de Recomendaciones -->
+        <article class="card" id="recomendacionesSection" style="margin-top: 2rem;">
+          <div style="text-align: center; margin-bottom: 1.5rem;">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">💬</div>
+            <h3 style="margin: 0; font-size: 1.5rem; color: var(--primary, #1e293b);">Recomendaciones</h3>
+            <p style="color: #64748b; margin-top: 0.4rem;">Comparte tus sugerencias para mejorar el comedor escolar</p>
           </div>
 
-          <form id="comedorSurveyForm" class="survey-form">
-            <!-- Sección: Desayuno -->
-            <div class="survey-section">
-              <h4 class="survey-section-title">
-                <i class="fas fa-sun"></i> Evaluación del Desayuno
-              </h4>
-
-              <div class="survey-question">
-                <label class="survey-label">
-                  <i class="fas fa-utensils"></i> Calidad de la comida del desayuno
-                </label>
-                <div class="rating-stars" data-question="desayuno-calidad">
-                  <span class="star" data-value="5">⭐</span>
-                  <span class="star" data-value="4">⭐</span>
-                  <span class="star" data-value="3">⭐</span>
-                  <span class="star" data-value="2">⭐</span>
-                  <span class="star" data-value="1">⭐</span>
-                </div>
-                <input type="hidden" name="desayuno-calidad" required>
-              </div>
-
-              <div class="survey-question">
-                <label class="survey-label">
-                  <i class="fas fa-list"></i> Variedad del menú del desayuno
-                </label>
-                <div class="rating-stars" data-question="desayuno-variedad">
-                  <span class="star" data-value="5">⭐</span>
-                  <span class="star" data-value="4">⭐</span>
-                  <span class="star" data-value="3">⭐</span>
-                  <span class="star" data-value="2">⭐</span>
-                  <span class="star" data-value="1">⭐</span>
-                </div>
-                <input type="hidden" name="desayuno-variedad" required>
-              </div>
-
-              <div class="survey-question">
-                <label class="survey-label">
-                  <i class="fas fa-temperature-high"></i> Temperatura de los alimentos (desayuno)
-                </label>
-                <div class="rating-stars" data-question="desayuno-temperatura">
-                  <span class="star" data-value="5">⭐</span>
-                  <span class="star" data-value="4">⭐</span>
-                  <span class="star" data-value="3">⭐</span>
-                  <span class="star" data-value="2">⭐</span>
-                  <span class="star" data-value="1">⭐</span>
-                </div>
-                <input type="hidden" name="desayuno-temperatura" required>
-              </div>
+          <form id="recomendacionesForm" style="display: flex; flex-direction: column; gap: 1rem; max-width: 600px; margin: 0 auto 2rem;">
+            <div style="display: flex; flex-direction: column; gap: 0.3rem;">
+              <label for="recNombre" style="font-weight: 600; color: var(--primary, #1e293b); font-size: 0.9rem;">
+                <i class="fas fa-user"></i> Tu Nombre
+              </label>
+              <input type="text" id="recNombre" placeholder="Escribe tu nombre..." required
+                style="padding: 0.7rem 1rem; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 0.95rem; outline: none; transition: border-color 0.2s;"
+                onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#e2e8f0'">
             </div>
-
-            <!-- Sección: Almuerzo -->
-            <div class="survey-section">
-              <h4 class="survey-section-title">
-                <i class="fas fa-drumstick-bite"></i> Evaluación del Almuerzo
-              </h4>
-
-              <div class="survey-question">
-                <label class="survey-label">
-                  <i class="fas fa-utensils"></i> Calidad de la comida del almuerzo
-                </label>
-                <div class="rating-stars" data-question="almuerzo-calidad">
-                  <span class="star" data-value="5">⭐</span>
-                  <span class="star" data-value="4">⭐</span>
-                  <span class="star" data-value="3">⭐</span>
-                  <span class="star" data-value="2">⭐</span>
-                  <span class="star" data-value="1">⭐</span>
-                </div>
-                <input type="hidden" name="almuerzo-calidad" required>
-              </div>
-
-              <div class="survey-question">
-                <label class="survey-label">
-                  <i class="fas fa-list"></i> Variedad del menú del almuerzo
-                </label>
-                <div class="rating-stars" data-question="almuerzo-variedad">
-                  <span class="star" data-value="5">⭐</span>
-                  <span class="star" data-value="4">⭐</span>
-                  <span class="star" data-value="3">⭐</span>
-                  <span class="star" data-value="2">⭐</span>
-                  <span class="star" data-value="1">⭐</span>
-                </div>
-                <input type="hidden" name="almuerzo-variedad" required>
-              </div>
-
-              <div class="survey-question">
-                <label class="survey-label">
-                  <i class="fas fa-temperature-high"></i> Temperatura de los alimentos (almuerzo)
-                </label>
-                <div class="rating-stars" data-question="almuerzo-temperatura">
-                  <span class="star" data-value="5">⭐</span>
-                  <span class="star" data-value="4">⭐</span>
-                  <span class="star" data-value="3">⭐</span>
-                  <span class="star" data-value="2">⭐</span>
-                  <span class="star" data-value="1">⭐</span>
-                </div>
-                <input type="hidden" name="almuerzo-temperatura" required>
-              </div>
-
-              <div class="survey-question">
-                <label class="survey-label">
-                  <i class="fas fa-apple-alt"></i> Porciones servidas
-                </label>
-                <div class="rating-stars" data-question="almuerzo-porciones">
-                  <span class="star" data-value="5">⭐</span>
-                  <span class="star" data-value="4">⭐</span>
-                  <span class="star" data-value="3">⭐</span>
-                  <span class="star" data-value="2">⭐</span>
-                  <span class="star" data-value="1">⭐</span>
-                </div>
-                <input type="hidden" name="almuerzo-porciones" required>
-              </div>
+            <div style="display: flex; flex-direction: column; gap: 0.3rem;">
+              <label for="recTexto" style="font-weight: 600; color: var(--primary, #1e293b); font-size: 0.9rem;">
+                <i class="fas fa-comment-dots"></i> Tu Recomendación
+              </label>
+              <textarea id="recTexto" rows="4" placeholder="¿Qué podemos mejorar? Cuéntanos tu experiencia..." required
+                style="padding: 0.7rem 1rem; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 0.95rem; outline: none; resize: vertical; transition: border-color 0.2s; font-family: inherit;"
+                onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#e2e8f0'"></textarea>
             </div>
-
-            <!-- Sección: Limpieza e Higiene -->
-            <div class="survey-section">
-              <h4 class="survey-section-title">
-                <i class="fas fa-broom"></i> Limpieza e Higiene
-              </h4>
-
-              <div class="survey-question">
-                <label class="survey-label">
-                  <i class="fas fa-soap"></i> Limpieza del área del comedor
-                </label>
-                <div class="rating-stars" data-question="limpieza-area">
-                  <span class="star" data-value="5">⭐</span>
-                  <span class="star" data-value="4">⭐</span>
-                  <span class="star" data-value="3">⭐</span>
-                  <span class="star" data-value="2">⭐</span>
-                  <span class="star" data-value="1">⭐</span>
-                </div>
-                <input type="hidden" name="limpieza-area" required>
-              </div>
-
-              <div class="survey-question">
-                <label class="survey-label">
-                  <i class="fas fa-table"></i> Limpieza de mesas y sillas
-                </label>
-                <div class="rating-stars" data-question="limpieza-mesas">
-                  <span class="star" data-value="5">⭐</span>
-                  <span class="star" data-value="4">⭐</span>
-                  <span class="star" data-value="3">⭐</span>
-                  <span class="star" data-value="2">⭐</span>
-                  <span class="star" data-value="1">⭐</span>
-                </div>
-                <input type="hidden" name="limpieza-mesas" required>
-              </div>
-
-              <div class="survey-question">
-                <label class="survey-label">
-                  <i class="fas fa-hands-wash"></i> Higiene del personal
-                </label>
-                <div class="rating-stars" data-question="higiene-personal">
-                  <span class="star" data-value="5">⭐</span>
-                  <span class="star" data-value="4">⭐</span>
-                  <span class="star" data-value="3">⭐</span>
-                  <span class="star" data-value="2">⭐</span>
-                  <span class="star" data-value="1">⭐</span>
-                </div>
-                <input type="hidden" name="higiene-personal" required>
-              </div>
-            </div>
-
-            <!-- Sección: Servicio -->
-            <div class="survey-section">
-              <h4 class="survey-section-title">
-                <i class="fas fa-user-friends"></i> Atención y Servicio
-              </h4>
-
-              <div class="survey-question">
-                <label class="survey-label">
-                  <i class="fas fa-smile"></i> Amabilidad del personal
-                </label>
-                <div class="rating-stars" data-question="servicio-amabilidad">
-                  <span class="star" data-value="5">⭐</span>
-                  <span class="star" data-value="4">⭐</span>
-                  <span class="star" data-value="3">⭐</span>
-                  <span class="star" data-value="2">⭐</span>
-                  <span class="star" data-value="1">⭐</span>
-                </div>
-                <input type="hidden" name="servicio-amabilidad" required>
-              </div>
-
-              <div class="survey-question">
-                <label class="survey-label">
-                  <i class="fas fa-clock"></i> Rapidez del servicio
-                </label>
-                <div class="rating-stars" data-question="servicio-rapidez">
-                  <span class="star" data-value="5">⭐</span>
-                  <span class="star" data-value="4">⭐</span>
-                  <span class="star" data-value="3">⭐</span>
-                  <span class="star" data-value="2">⭐</span>
-                  <span class="star" data-value="1">⭐</span>
-                </div>
-                <input type="hidden" name="servicio-rapidez" required>
-              </div>
-            </div>
-
-            <!-- Recomendaciones -->
-            <div class="survey-section">
-              <h4 class="survey-section-title">
-                <i class="fas fa-comment-dots"></i> Tus Recomendaciones
-              </h4>
-
-              <div class="survey-question">
-                <label class="survey-label">
-                  <i class="fas fa-lightbulb"></i> ¿Qué podemos mejorar? (Opcional)
-                </label>
-                <textarea name="recomendaciones" class="survey-textarea"
-                  placeholder="Comparte tus sugerencias para mejorar el servicio del comedor..." rows="5"></textarea>
-              </div>
-            </div>
-
-            <!-- Botones -->
-            <div class="survey-actions">
-              <button type="button" class="btn-survey btn-cancel" onclick="closeSurvey()">
-                <i class="fas fa-times"></i> Cancelar
-              </button>
-              <button type="submit" class="btn-survey btn-submit-survey">
-                <i class="fas fa-paper-plane"></i> Enviar Encuesta
-              </button>
-            </div>
+            <button type="submit"
+              style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: opacity 0.2s; align-self: flex-start;"
+              onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+              <i class="fas fa-paper-plane"></i> Enviar Recomendación
+            </button>
           </form>
 
-          <!-- Mensaje de éxito -->
-          <div id="surveySuccess" class="survey-success" style="display: none;">
-            <div class="success-icon">
-              <i class="fas fa-check-circle"></i>
-            </div>
-            <h3>¡Gracias por tu opinión!</h3>
-            <p>Tu evaluación nos ayuda a mejorar el servicio del comedor escolar.</p>
-            <button class="btn-survey btn-submit-survey" onclick="closeSurvey()">
-              <i class="fas fa-check"></i> Cerrar
-            </button>
+          <div id="recomendacionesLista" style="display: flex; flex-direction: column; gap: 1rem; max-width: 600px; margin: 0 auto;">
+            <!-- Las tarjetas se renderizan aquí con JS -->
           </div>
         </article>
 
         <script>
+
+          // ── Recomendaciones ──────────────────────────────────────────────
+          (function () {
+            const STORAGE_KEY = 'comedor_recomendaciones';
+            const form = document.getElementById('recomendacionesForm');
+            const lista = document.getElementById('recomendacionesLista');
+
+            function getRecomendaciones() {
+              return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            }
+
+            function saveRecomendaciones(data) {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            }
+
+            function formatDate(iso) {
+              const d = new Date(iso);
+              return d.toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' });
+            }
+
+            function renderRecomendaciones() {
+              const recs = getRecomendaciones();
+              if (recs.length === 0) {
+                lista.innerHTML = `
+                  <div style="text-align:center; color:#94a3b8; padding:2rem 1rem;">
+                    <i class="fas fa-comment-slash" style="font-size:2rem; margin-bottom:0.5rem; display:block;"></i>
+                    Aún no hay recomendaciones. ¡Sé el primero en compartir la tuya!
+                  </div>`;
+                return;
+              }
+              lista.innerHTML = recs.map((r, i) => `
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 1.2rem 1.4rem; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                  <div style="display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.6rem;">
+                    <div style="width:38px; height:38px; border-radius:50%; background: linear-gradient(135deg,#667eea,#764ba2); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:1rem; flex-shrink:0;">
+                      ${r.nombre.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <div style="font-weight:700; color:#1e293b; font-size:0.95rem;">${r.nombre}</div>
+                      <div style="font-size:0.78rem; color:#94a3b8;">${formatDate(r.fecha)}</div>
+                    </div>
+                  </div>
+                  <p style="margin:0; color:#475569; line-height:1.6; font-size:0.93rem;">${r.texto}</p>
+                </div>
+              `).join('');
+            }
+
+            form.addEventListener('submit', function (e) {
+              e.preventDefault();
+              const nombre = document.getElementById('recNombre').value.trim();
+              const texto = document.getElementById('recTexto').value.trim();
+              if (!nombre || !texto) return;
+              const recs = getRecomendaciones();
+              recs.unshift({ nombre, texto, fecha: new Date().toISOString() });
+              saveRecomendaciones(recs);
+              form.reset();
+              renderRecomendaciones();
+              lista.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+
+            renderRecomendaciones();
+          })();
+
           // Cargar menú del día desde JSON o localStorage
           (function () {
             const menuContainer = document.getElementById('menuDelDia');
@@ -1132,154 +1043,6 @@
             }
           })();
         </script>
-
-        <!-- Script para la encuesta -->
-        <script>
-          // Funcionalidad de estrellas de calificación
-          document.addEventListener('DOMContentLoaded', function () {
-            const ratingContainers = document.querySelectorAll('.rating-stars');
-
-            ratingContainers.forEach(container => {
-              const stars = container.querySelectorAll('.star');
-              const questionName = container.getAttribute('data-question');
-              const hiddenInput = document.querySelector(`input[name="${questionName}"]`);
-
-              stars.forEach(star => {
-                star.addEventListener('click', function () {
-                  const value = this.getAttribute('data-value');
-
-                  // Actualizar input oculto
-                  hiddenInput.value = value;
-
-                  // Actualizar estrellas visuales
-                  stars.forEach(s => {
-                    const starValue = parseInt(s.getAttribute('data-value'));
-                    if (starValue <= parseInt(value)) {
-                      s.classList.add('active');
-                    } else {
-                      s.classList.remove('active');
-                    }
-                  });
-                });
-
-                // Efecto hover
-                star.addEventListener('mouseenter', function () {
-                  const value = this.getAttribute('data-value');
-                  stars.forEach(s => {
-                    const starValue = parseInt(s.getAttribute('data-value'));
-                    if (starValue <= parseInt(value)) {
-                      s.style.filter = 'grayscale(0%)';
-                      s.style.opacity = '1';
-                    }
-                  });
-                });
-
-                container.addEventListener('mouseleave', function () {
-                  const currentValue = hiddenInput.value;
-                  stars.forEach(s => {
-                    const starValue = parseInt(s.getAttribute('data-value'));
-                    if (!currentValue || starValue > parseInt(currentValue)) {
-                      if (!s.classList.contains('active')) {
-                        s.style.filter = 'grayscale(100%)';
-                        s.style.opacity = '0.4';
-                      }
-                    }
-                  });
-                });
-              });
-            });
-
-            // Manejo del formulario
-            const surveyForm = document.getElementById('comedorSurveyForm');
-            if (surveyForm) {
-              surveyForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                // Validar que todas las preguntas requeridas estén respondidas
-                const requiredInputs = this.querySelectorAll('input[type="hidden"][required]');
-                let allAnswered = true;
-
-                requiredInputs.forEach(input => {
-                  if (!input.value) {
-                    allAnswered = false;
-                  }
-                });
-
-                if (!allAnswered) {
-                  alert('⚠️ Por favor, responde todas las preguntas con estrellas antes de enviar.');
-                  return;
-                }
-
-                // Recopilar datos
-                const formData = new FormData(this);
-                const surveyData = {
-                  fecha: new Date().toISOString(),
-                  desayuno: {
-                    calidad: formData.get('desayuno-calidad'),
-                    variedad: formData.get('desayuno-variedad'),
-                    temperatura: formData.get('desayuno-temperatura')
-                  },
-                  almuerzo: {
-                    calidad: formData.get('almuerzo-calidad'),
-                    variedad: formData.get('almuerzo-variedad'),
-                    temperatura: formData.get('almuerzo-temperatura'),
-                    porciones: formData.get('almuerzo-porciones')
-                  },
-                  limpieza: {
-                    area: formData.get('limpieza-area'),
-                    mesas: formData.get('limpieza-mesas'),
-                    higiene_personal: formData.get('higiene-personal')
-                  },
-                  servicio: {
-                    amabilidad: formData.get('servicio-amabilidad'),
-                    rapidez: formData.get('servicio-rapidez')
-                  },
-                  recomendaciones: formData.get('recomendaciones')
-                };
-
-                // Guardar en localStorage
-                const surveys = JSON.parse(localStorage.getItem('comedor_surveys') || '[]');
-                surveys.push(surveyData);
-                localStorage.setItem('comedor_surveys', JSON.stringify(surveys));
-
-                // Mostrar mensaje de éxito
-                document.getElementById('comedorSurveyForm').style.display = 'none';
-                document.getElementById('surveySuccess').style.display = 'block';
-
-                console.log('Encuesta guardada:', surveyData);
-              });
-            }
-          });
-
-          // Función para cerrar la encuesta
-          function closeSurvey() {
-            const surveySection = document.getElementById('surveySection');
-            surveySection.style.display = 'none';
-
-            // Reset form
-            const form = document.getElementById('comedorSurveyForm');
-            if (form) {
-              form.reset();
-              form.style.display = 'block';
-
-              // Reset stars
-              document.querySelectorAll('.rating-stars .star').forEach(star => {
-                star.classList.remove('active');
-                star.style.filter = 'grayscale(100%)';
-                star.style.opacity = '0.4';
-              });
-
-              // Reset hidden inputs
-              document.querySelectorAll('input[type="hidden"]').forEach(input => {
-                input.value = '';
-              });
-            }
-
-            // Hide success message
-            document.getElementById('surveySuccess').style.display = 'none';
-          }
-        </script>
-
         <!-- Normas del comedor -->
         <article class="card">
           <div class="card-icon">📋</div>
@@ -1314,86 +1077,6 @@
           la jornada escolar, contribuyendo así a su rendimiento académico y desarrollo integral.
         </p>
       </div>
-
-      <!-- Galería de Fotos -->
-      <div class="section-header" style="margin-top: 4rem;">
-        <h2 data-translate="📸 Galería del Comedor">📸 Galería del Comedor</h2>
-      </div>
-
-      <div class="promotions-gallery" id="comedorGallery" style="margin-top: 2rem;">
-        <!-- Las imágenes se cargarán dinámicamente desde el dashboard -->
-      </div>
-
-      <script>
-        // Cargar galería del comedor desde JSON o localStorage
-        (function () {
-          const galleryContainer = document.getElementById('comedorGallery');
-
-          function renderGallery(comedorImages) {
-            console.log('🍽️ Renderizando galería del comedor:', comedorImages);
-
-            if (comedorImages.length > 0) {
-              galleryContainer.innerHTML = comedorImages.map((item, index) => {
-                // Use URL if available (external), otherwise use base64 or path
-                const imgSrc = item.url || item.base64 || item.path;
-                console.log(`Imagen ${index}:`, {
-                  title: item.title,
-                  url: item.url,
-                  hasBase64: !!item.base64,
-                  path: item.path,
-                  finalSrc: imgSrc,
-                  isExternal: item.isExternal
-                });
-
-                return `
-                  <div class="promotion-item">
-                    <img src="${imgSrc}" alt="${item.title}" class="promotion-image"
-                         onerror="console.error('❌ Error cargando imagen:', '${imgSrc}'); this.parentElement.innerHTML='<div style=padding:2rem;text-align:center;color:red>❌ Error cargando imagen<br><small>${imgSrc}</small></div>'">
-                    <div class="promotion-caption">
-                      <h3>${item.title || 'Foto del Comedor'}</h3>
-                      ${item.description ? `<p>${item.description}</p>` : ''}
-                      ${item.isExternal ? '<p style="font-size:0.8rem;color:#667eea;">🌐 Imagen externa</p>' : ''}
-                    </div>
-                  </div>
-                `;
-              }).join('') + `
-                <div class="promotion-placeholder">
-                  <div class="placeholder-icon">📸</div>
-                  <p>Gestiona las fotos desde el <a href="admin.html" style="color: #667eea;">panel administrativo</a></p>
-                </div>
-              `;
-            } else {
-              console.log('⚠️ No hay imágenes del comedor');
-              galleryContainer.innerHTML = `
-                <div class="promotion-placeholder">
-                  <div class="placeholder-icon">📸</div>
-                  <p>No hay fotos disponibles. <a href="admin.html" style="color: #667eea;">Añade fotos desde el panel administrativo</a></p>
-                </div>
-              `;
-            }
-          }
-
-          // Try to load from JSON file first
-          console.log('🔍 Intentando cargar desde data/content-data.json...');
-          fetch('data/content-data.json')
-            .then(response => {
-              console.log('✅ Respuesta recibida:', response.status);
-              return response.json();
-            })
-            .then(data => {
-              console.log('📦 Datos cargados desde JSON:', data);
-              console.log('🍽️ Datos del comedor:', data.comedor);
-              renderGallery(data.comedor || []);
-            })
-            .catch(error => {
-              // Fallback to localStorage
-              console.log('⚠️ Error cargando JSON, usando localStorage:', error);
-              const contentData = JSON.parse(localStorage.getItem('pcb_content_data') || '{}');
-              console.log('📦 Datos desde localStorage:', contentData);
-              renderGallery(contentData.comedor || []);
-            });
-        })();
-      </script>
 
   </section>
 
