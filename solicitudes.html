@@ -1,971 +1,545 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Solicitudes de Servicio Técnico - Escuela Superior Vocacional Pablo Colón Berdecia</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitud de Documentos - Ecosistema Escolar Digital</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+  <link rel="stylesheet" href="dropdown-fix.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    /* Fix dark mode */
+    body.dark-mode .card,
+    body.dark-mode .service-card,
+    body.dark-mode .form-container {
+      background: rgba(17, 24, 39, 0.95) !important;
+      border: 1px solid rgba(56, 189, 248, 0.2) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+      color: #E5E7EB !important;
     }
 
-    body {
-      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-      min-height: 100vh;
-      color: #1e293b;
-      line-height: 1.6;
+    body.dark-mode h1,
+    body.dark-mode h2,
+    body.dark-mode h3 {
+      color: #38BDF8 !important;
     }
 
-    .header {
-      background: linear-gradient(135deg, #2c5282 0%, #1a365d 100%);
-      color: white;
-      padding: 2rem 0;
+    body.dark-mode p,
+    body.dark-mode label {
+      color: #9CA3AF !important;
+    }
+
+    body.dark-mode input,
+    body.dark-mode select,
+    body.dark-mode textarea {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(56, 189, 248, 0.2) !important;
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode input:focus,
+    body.dark-mode select:focus,
+    body.dark-mode textarea:focus {
+      border-color: #38BDF8 !important;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2) !important;
+    }
+  </style>
+  <style>
+    /* Estilos específicos para formularios institucionales */
+    .form-container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-header {
       text-align: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-      position: relative;
-      overflow: hidden;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #f0f0f0;
+      padding-bottom: 20px;
     }
 
-    .header::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="50" r="0.5" fill="white" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-      pointer-events: none;
+    .form-header h1 {
+      color: #2c3e50;
+      font-size: 24px;
+      margin-bottom: 10px;
     }
 
-    .school-name {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.5px;
-      position: relative;
-      z-index: 1;
+    .form-header p {
+      color: #7f8c8d;
     }
 
-    .department-name {
-      font-size: 1.1rem;
-      opacity: 0.95;
-      font-weight: 400;
-      position: relative;
-      z-index: 1;
+    .form-group {
+      margin-bottom: 20px;
     }
 
-    .container {
-      max-width: 1350px;
-      margin: 2rem auto;
-      padding: 0 1.5rem;
-    }
-
-    .back-btn {
-      background: linear-gradient(135deg, #2c5282 0%, #4299e1 100%);
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-bottom: 2rem;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .back-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(44, 82, 130, 0.3);
-    }
-
-    .page-title {
-      font-size: 2rem;
-      color: #2c5282;
-      text-align: center;
-      margin: 1.5rem 0 2rem;
-      font-weight: 600;
-    }
-
-    .filters-card,
-    .requests-container,
-    .stat-card {
-      background: white;
-      border-radius: 14px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    }
-
-    .filters-card {
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .filters-title {
-      color: #2c5282;
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-      font-weight: 700;
-    }
-
-    .filters-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
-    }
-
-    .filter-group label {
+    .form-label {
       display: block;
+      margin-bottom: 8px;
       font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: #374151;
-      font-size: 0.92rem;
+      color: #34495e;
     }
 
-    .filter-group input,
-    .filter-group select {
+    .form-control {
       width: 100%;
-      padding: 0.9rem 1rem;
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      background: #fafafa;
-      transition: all 0.25s ease;
-      font-family: inherit;
+      padding: 12px;
+      border: 1px solid #bdc3c7;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: border-color 0.3s;
     }
 
-    .filter-group input:focus,
-    .filter-group select:focus {
+    .form-control:focus {
+      border-color: #3498db;
       outline: none;
-      border-color: #2563eb;
-      background: white;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
     }
 
-    .filters-actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-top: 1rem;
+    .form-text {
+      display: block;
+      margin-top: 5px;
+      font-size: 13px;
+      color: #95a5a6;
     }
 
-    .btn-action {
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background-color: #2ecc71;
+      color: white;
       border: none;
-      border-radius: 10px;
-      padding: 0.85rem 1.25rem;
+      border-radius: 6px;
+      font-size: 18px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.25s ease;
-      font-family: inherit;
+      transition: background-color 0.3s;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
-      color: white;
+    .btn-submit:hover {
+      background-color: #27ae60;
     }
 
-    .btn-secondary {
-      background: #e5e7eb;
-      color: #1f2937;
+    .status-tracker {
+      margin-top: 40px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      display: none;
+      /* Hidden by default */
     }
 
-    .btn-action:hover {
-      transform: translateY(-2px);
+    .success-animation {
+      text-align: center;
+      padding: 20px;
     }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2rem;
+    .success-icon {
+      font-size: 50px;
+      color: #2ecc71;
+      margin-bottom: 20px;
     }
 
-    .stat-card {
-      padding: 1.5rem;
+    .ticket-info {
+      background: #e8f6f3;
+      border: 1px solid #d4efdf;
+      padding: 15px;
+      border-radius: 6px;
+      margin-top: 20px;
       text-align: center;
     }
 
-    .stat-number {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #2c5282;
-      margin-bottom: 0.4rem;
+    .ticket-id {
+      font-family: monospace;
+      font-size: 24px;
+      font-weight: bold;
+      color: #2c3e50;
+      letter-spacing: 2px;
     }
 
-    .stat-label {
-      color: #6b7280;
-      font-size: 0.92rem;
-    }
-
-    .requests-container {
-      padding: 2rem;
-    }
-
-    .request-card {
-      background: #f8fafc;
-      border-radius: 14px;
-      padding: 1.5rem;
-      margin-bottom: 1.2rem;
-      border-left: 5px solid #2c5282;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .request-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-    }
-
-    .request-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-    }
-
-    .request-info {
-      flex: 1;
-      min-width: 280px;
-    }
-
-    .request-title {
-      color: #2c5282;
-      margin-bottom: 0.4rem;
-      font-size: 1.1rem;
-    }
-
-    .request-meta {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      margin-top: 0.5rem;
-    }
-
-    .request-date {
-      color: #6b7280;
-      font-size: 0.92rem;
-      font-weight: 500;
-    }
-
-    .request-status,
-    .priority-badge {
-      display: inline-block;
-      padding: 0.4rem 0.8rem;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      font-weight: 700;
-    }
-
-    .status-pendiente {
-      background: #f59e0b;
-      color: white;
-    }
-
-    .status-en-proceso {
-      background: #2563eb;
-      color: white;
-    }
-
-    .status-realizado {
-      background: #10b981;
-      color: white;
-    }
-
-    .priority-baja {
-      background: #10b981;
-      color: white;
-    }
-
-    .priority-media {
-      background: #f59e0b;
-      color: white;
-    }
-
-    .priority-alta {
-      background: #ef4444;
-      color: white;
-    }
-
-    .priority-critica {
-      background: #7c3aed;
-      color: white;
-    }
-
-    .request-details {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 0.8rem 1.2rem;
-      margin-top: 1rem;
-    }
-
-    .detail-item {
-      display: flex;
-      gap: 0.5rem;
-      align-items: flex-start;
-    }
-
-    .detail-label {
-      font-weight: 700;
-      color: #374151;
-      min-width: 110px;
-    }
-
-    .detail-value {
-      color: #6b7280;
-      flex: 1;
-      word-break: break-word;
-    }
-
-    .actions-row {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      margin-top: 1.25rem;
-    }
-
-    .btn-status,
-    .btn-delete {
-      border: none;
-      border-radius: 10px;
-      padding: 0.8rem 1rem;
-      font-size: 0.9rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      font-family: inherit;
-    }
-
-    .btn-pending {
-      background: #f59e0b;
-      color: white;
-    }
-
-    .btn-progress {
-      background: #2563eb;
-      color: white;
-    }
-
-    .btn-done {
-      background: #10b981;
-      color: white;
-    }
-
-    .btn-delete {
-      background: #dc2626;
-      color: white;
-    }
-
-    .btn-status:hover,
-    .btn-delete:hover {
-      transform: translateY(-2px);
-    }
-
-    .tech-input {
-      margin-top: 1rem;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 0.75rem;
-      align-items: center;
-    }
-
-    .tech-input input {
-      width: 100%;
-      padding: 0.85rem 1rem;
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      font-family: inherit;
-      font-size: 0.95rem;
-    }
-
-    .tech-input input:focus {
-      outline: none;
-      border-color: #2563eb;
-    }
-
-    .btn-assign {
-      background: #0f766e;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 0.85rem 1rem;
-      cursor: pointer;
-      font-weight: 700;
-      font-family: inherit;
-    }
-
-    .btn-view-images {
-      background: #8b5cf6;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-.btn-view-images:hover {
-      background: #7c3aed;
-    }
-
-    /* Dark Mode Toggle */
-    .dark-mode-toggle {
-      position: fixed;
-      top: 1rem;
-      right: 4rem;
-      z-index: 9999;
-    }
-
-    .dark-mode-switch {
+    /* Estilos para el campo de adjunto de licencia */
+    .file-upload-wrapper {
       position: relative;
-      display: inline-block;
-      width: 50px;
-      height: 26px;
     }
 
-    .dark-mode-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .dark-mode-slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #cbd5e1;
-      transition: .4s;
-      border-radius: 26px;
-    }
-
-    .dark-mode-slider:before {
-      position: absolute;
-      content: "🌙";
-      height: 20px;
-      width: 20px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
+    .file-upload-label {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 14px;
+      gap: 10px;
+      padding: 12px 16px;
+      border: 2px dashed #bdc3c7;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #f9f9f9;
+      transition: border-color 0.3s, background 0.3s;
+      font-size: 15px;
+      color: #7f8c8d;
     }
 
-    .dark-mode-switch input:checked + .dark-mode-slider {
-      background-color: #1e293b;
+    .file-upload-label:hover {
+      border-color: #3498db;
+      background: #eaf4fd;
+      color: #2980b9;
     }
 
-    .dark-mode-switch input:checked + .dark-mode-slider:before {
-      transform: translateX(24px);
+    .file-upload-label i {
+      font-size: 20px;
+      color: #3498db;
     }
 
-    /* Dark Mode Styles */
-    body.dark-mode {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      color: #e2e8f0;
+    #licenciaFoto {
+      display: none;
     }
 
-    body.dark-mode .header {
-      background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+    #fileNameDisplay {
+      margin-top: 6px;
+      font-size: 13px;
+      color: #27ae60;
+      font-weight: 500;
+      min-height: 18px;
     }
 
-    body.dark-mode .container {
-      background: #1e293b;
+    #licenciaPreview {
+      display: none;
+      margin-top: 10px;
+      max-width: 100%;
+      max-height: 180px;
+      border-radius: 6px;
+      border: 1px solid #d4efdf;
+      object-fit: cover;
     }
 
-    body.dark-mode .back-btn,
-    body.dark-mode .btn-status,
-    body.dark-mode .btn-assign {
-      background: #3b82f6;
+    .required-badge {
+      display: inline-block;
+      background: #e74c3c;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+      margin-left: 6px;
+      vertical-align: middle;
     }
 
-    body.dark-mode .request-card {
-      background: #334155;
-      border-color: #475569;
+    body.dark-mode .file-upload-label {
+      background: rgba(255,255,255,0.04) !important;
+      border-color: rgba(56,189,248,0.3) !important;
+      color: #9CA3AF !important;
     }
 
-    body.dark-mode .detail-label {
-      color: #94a3b8;
-    }
-
-    body.dark-mode .detail-value {
-      color: #e2e8f0;
-    }
-
-    body.dark-mode input {
-      background: #334155;
-      border-color: #475569;
-      color: #e2e8f0;
-    }
-
-    body.dark-mode select {
-      background: #334155;
-      border-color: #475569;
-      color: #e2e8f0;
-    }
-
-    body.dark-mode .search-box input {
-      background: #334155;
-      border-color: #475569;
-    }
-
-    body.dark-mode .stat-card {
-      background: #334155;
-    }
-
-    body.dark-mode .no-requests {
-      color: #94a3b8;
-    }
-
-    body.dark-mode .priority-badge {
-      color: #1e293b;
-    }
-
-    body.dark-mode .request-status {
-      color: #1e293b;
-    }
-
-    body.dark-mode .btn-view-images {
-      background: #7c3aed;
-    }
-
-    body.dark-mode .search-filters {
-      background: #334155;
-    }
-
-    body.dark-mode .filter-group label {
-      color: #94a3b8;
+    body.dark-mode .file-upload-label:hover {
+      border-color: #38BDF8 !important;
+      background: rgba(56,189,248,0.08) !important;
+      color: #38BDF8 !important;
     }
   </style>
 </head>
+
 <body>
-  <div class="dark-mode-toggle">
-    <label class="dark-mode-switch">
-      <input type="checkbox" id="darkModeToggle">
-      <span class="dark-mode-slider"></span>
-    </label>
+
+  <!-- Popup de selección de tema -->
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button type="button" class="theme-btn theme-btn-light" id="btnLightMode" onclick="document.body.classList.remove('dark-mode'); localStorage.setItem('theme', 'light'); document.getElementById('themePopup').classList.add('hidden');">
+          ☀️ Modo Claro
+        </button>
+        <button type="button" class="theme-btn theme-btn-dark" id="btnDarkMode" onclick="document.body.classList.add('dark-mode'); localStorage.setItem('theme', 'dark'); document.getElementById('themePopup').classList.add('hidden');">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
   </div>
-  <div class="header">
-    <div class="school-name">Escuela Superior Vocacional Pablo Colón Berdecia</div>
-    <div class="department-name">Solicitudes de Servicio Técnico - COMPUTEC</div>
+
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+      }
+      const popup = document.getElementById('themePopup');
+      if (popup && savedTheme) {
+        popup.classList.add('hidden');
+      }
+    })();
+  </script>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html" data-translate="Inicio">Inicio</a></li>
+          <li><a href="index.html#servicios" data-translate="Servicios">Servicios</a></li>
+          <li><a href="index.html#contacto" data-translate="Contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Menú lateral hamburguesa -->
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="Menú">Menú</h3>
+      <button class="sidebar-close" id="closeSidebar">&times;</button>
+    </div>
+    <div class="sidebar-content">
+      <a href="index.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">🏠</span>
+        <span class="sidebar-text" data-translate="Inicio">Inicio</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+      <a href="quienes-somos.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">🏫</span>
+        <span class="sidebar-text" data-translate="Quiénes Somos">Quiénes Somos</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+      <div class="sidebar-item" id="servicesToggle">
+        <span class="sidebar-icon">💻</span>
+        <span class="sidebar-text" data-translate="Servicios Digitales">Servicios Digitales</span>
+        <span class="sidebar-arrow">›</span>
+      </div>
+      <div class="theme-options" id="servicesOptions" style="display:none;">
+        <a href="https://de.pr.gov/MATRICULA//" class="theme-option"><span>📝</span> Matrícula Online</a>
+        <a href="solicitudes.html" class="theme-option"><span>📄</span> Solicitud de Documentos</a>
+        <a href="https://pcbsystempr-cyber.github.io/Servicio-Tecnico/" class="theme-option"><span>🔧</span> Servicios Técnicos</a>
+        <a href="https://pcbsystempr-cyber.github.io/Unidad-de-ApoyoSocioEmocional/" class="theme-option"><span>🧠</span> Orientación</a>
+        <a href="biblioteca.html" class="theme-option"><span>📚</span> Biblioteca</a>
+        <a href="comedor.html" class="theme-option"><span>🍽️</span> Comedor</a>
+        <a href="padres.html" class="theme-option"><span>👨‍👩‍👧</span> Portal de Padres</a>
+        <a href="seguridad.html" class="theme-option"><span>🛡️</span> Seguridad</a>
+      </div>
+      <a href="participacion-comunitaria.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">🎓</span>
+        <span class="sidebar-text" data-translate="Vida Estudiantil">Vida Estudiantil</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+      <a href="normas-reglamentos.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">📋</span>
+        <span class="sidebar-text" data-translate="Normas">Normas</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+      <div style="border-top:1px solid rgba(255,255,255,0.1);margin:1rem 0;"></div>
+      <div class="sidebar-item" id="themeToggle">
+        <span class="sidebar-icon">🎨</span>
+        <span class="sidebar-text" data-translate="Cambiar Tema">Cambiar Tema</span>
+        <span class="sidebar-arrow">›</span>
+      </div>
+      <div class="theme-options" id="themeOptions" style="display:none;">
+        <button class="theme-option" id="selectLightMode"><span>☀️</span> Modo Claro</button>
+        <button class="theme-option" id="selectDarkMode"><span>🌙</span> Modo Oscuro</button>
+      </div>
+      <div class="sidebar-item" id="languageToggle">
+        <span class="sidebar-icon">🌐</span>
+        <span class="sidebar-text" data-translate="Cambiar Idioma">Cambiar Idioma</span>
+        <span class="sidebar-arrow">›</span>
+      </div>
+      <div class="theme-options" id="languageOptions" style="display:none;">
+        <button class="theme-option" id="selectSpanish"><span>🇵🇷</span> Español</button>
+        <button class="theme-option" id="selectEnglish"><span>🇺🇸</span> English</button>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,0.1);margin:1rem 0;"></div>
+      <a href="admin.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">⚙️</span>
+        <span class="sidebar-text" data-translate="Dashboard Admin">Dashboard Admin</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+    </div>
   </div>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script>
+    (function () {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const closeSidebarBtn = document.getElementById('closeSidebar');
+      const servicesToggle = document.getElementById('servicesToggle');
+      const servicesOptions = document.getElementById('servicesOptions');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+
+      function openSidebar() { sidebarMenu.classList.add('active'); sidebarOverlay.classList.add('active'); }
+      function closeSidebar() {
+        sidebarMenu.classList.remove('active'); sidebarOverlay.classList.remove('active');
+        if (servicesOptions) servicesOptions.style.display = 'none';
+        if (themeOptions) themeOptions.style.display = 'none';
+        if (languageOptions) languageOptions.style.display = 'none';
+      }
+
+      if (hamburgerBtn) hamburgerBtn.addEventListener('click', openSidebar);
+      if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', closeSidebar);
+      if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+
+      if (servicesToggle && servicesOptions) {
+        servicesToggle.addEventListener('click', function () {
+          const open = servicesOptions.style.display === 'block';
+          servicesOptions.style.display = open ? 'none' : 'block';
+          const arrow = this.querySelector('.sidebar-arrow');
+          if (arrow) arrow.style.transform = open ? 'rotate(0deg)' : 'rotate(90deg)';
+        });
+      }
+      if (themeToggle && themeOptions) {
+        themeToggle.addEventListener('click', function () {
+          themeOptions.style.display = themeOptions.style.display === 'block' ? 'none' : 'block';
+        });
+      }
+      if (languageToggle && languageOptions) {
+        languageToggle.addEventListener('click', function () {
+          languageOptions.style.display = languageOptions.style.display === 'block' ? 'none' : 'block';
+        });
+      }
+
+      const selectLightMode = document.getElementById('selectLightMode');
+      const selectDarkMode = document.getElementById('selectDarkMode');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+
+      if (selectLightMode) selectLightMode.addEventListener('click', function () { document.body.classList.remove('dark-mode'); localStorage.setItem('theme', 'light'); closeSidebar(); });
+      if (selectDarkMode) selectDarkMode.addEventListener('click', function () { document.body.classList.add('dark-mode'); localStorage.setItem('theme', 'dark'); closeSidebar(); });
+      if (selectSpanish) selectSpanish.addEventListener('click', function () { localStorage.setItem('language', 'es'); if (typeof translatePage === 'function') translatePage('es'); closeSidebar(); });
+      if (selectEnglish) selectEnglish.addEventListener('click', function () { localStorage.setItem('language', 'en'); if (typeof translatePage === 'function') translatePage('en'); closeSidebar(); });
+    })();
+  </script>
+
+
+  <!-- Navegación Simplificada -->
+
 
   <div class="container">
-    <a href="dashboard.html" class="back-btn">← Volver al Panel</a>
+    <div class="form-container" id="requestFormContainer">
+      <div class="form-header">
+        <h1>Solicitud de Documentos Oficiales</h1>
+        <p>Complete el formulario para solicitar certificaciones, transcripciones y otros documentos académicos.</p>
+      </div>
 
-    <h1 class="page-title">Todas las Solicitudes de Servicio Técnico</h1>
-
-    <div class="filters-card">
-      <h2 class="filters-title">Buscar y filtrar solicitudes</h2>
-
-      <div class="filters-grid">
-        <div class="filter-group">
-          <label for="searchTeacher">Buscar por maestro</label>
-          <input type="text" id="searchTeacher" placeholder="Ej: Ángel o Rivera" />
-        </div>
-
-        <div class="filter-group">
-          <label for="searchTechnician">Buscar por técnico</label>
-          <input type="text" id="searchTechnician" placeholder="Ej: Sebastián" />
-        </div>
-
-        <div class="filter-group">
-          <label for="searchDate">Buscar por fecha</label>
-          <input type="date" id="searchDate" />
-        </div>
-
-        <div class="filter-group">
-          <label for="filterStatus">Filtrar por estado</label>
-          <select id="filterStatus">
-            <option value="">Todos</option>
-            <option value="Pendiente">Pendiente</option>
-            <option value="En Proceso">En Proceso</option>
-            <option value="Realizado">Realizado</option>
+      <form id="documentRequestForm">
+        <div class="form-group">
+          <label class="form-label">Tipo de Documento</label>
+          <select class="form-control" name="type" required>
+            <option value="">Seleccione una opción...</option>
+            <option value="certificacion_estudios">Certificación de Estudios</option>
+            <option value="transcripcion_creditos">Transcripción de Créditos</option>
+            <option value="carta_conducta">Carta de Buena Conducta</option>
+            <option value="carta_graduacion">Constancia de Graduación</option>
+            <option value="certificacion_beca">Certificación para Becas/Ayudas</option>
+            <option value="recomendacion">Carta de Recomendación</option>
           </select>
         </div>
-      </div>
 
-      <div class="filters-actions">
-        <button class="btn-action btn-primary" id="applyFiltersBtn">Aplicar filtros</button>
-        <button class="btn-action btn-secondary" id="clearFiltersBtn">Limpiar filtros</button>
-      </div>
+        <div class="form-group">
+          <label class="form-label">Nombre del Estudiante</label>
+          <input type="text" class="form-control" name="studentName" required placeholder="Nombre completo">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Número de Estudiante (SIE)</label>
+          <input type="text" class="form-control" name="studentId" placeholder="Ej. 12345678" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Grado / Grupo</label>
+          <select class="form-control" name="grade" required>
+            <option value="">Seleccione...</option>
+            <option value="9">9no Grado</option>
+            <option value="10">10mo Grado</option>
+            <option value="11">11mo Grado</option>
+            <option value="12">12mo Grado</option>
+            <option value="graduado">Graduado (Ex-alumno)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Correo Electrónico</label>
+          <input type="email" class="form-control" name="email" required placeholder="Para recibir notificaciones">
+          <small class="form-text">Se enviará el documento o la notificación de recogida a este correo.</small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Teléfono</label>
+          <input type="tel" class="form-control" name="phone" placeholder="(787) 000-0000">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Detalles Adicionales / Instrucciones</label>
+          <textarea class="form-control" name="details" rows="3"
+            placeholder="Especifique si necesita sello oficial, firma del director, etc."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Foto de Licencia / Identificación
+            <span class="required-badge">Requerido</span>
+          </label>
+          <div class="file-upload-wrapper">
+            <label class="file-upload-label" for="licenciaFoto">
+              <i class="fas fa-id-card"></i>
+              <span>Adjuntar foto de licencia o identificación oficial...</span>
+            </label>
+            <input type="file" id="licenciaFoto" name="licenciaFoto" accept="image/*" required>
+            <div id="fileNameDisplay"></div>
+            <img id="licenciaPreview" src="" alt="Vista previa de licencia">
+          </div>
+          <small class="form-text">📷 Adjunte una foto clara de su licencia de conducir, pasaporte u otra identificación oficial. Formatos aceptados: JPG, PNG, WEBP. Tamaño máximo: 5 MB.</small>
+        </div>
+
+        <button type="submit" class="btn-submit">Enviar Solicitud</button>
+      </form>
     </div>
 
-    <div class="stats">
-      <div class="stat-card">
-        <div class="stat-number" id="totalRequests">0</div>
-        <div class="stat-label">Total Solicitudes</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="pendingRequests">0</div>
-        <div class="stat-label">Pendientes</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="inProgressRequests">0</div>
-        <div class="stat-label">En Proceso</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="completedRequests">0</div>
-        <div class="stat-label">Realizados</div>
-      </div>
-    </div>
+    <!-- Pantalla de Éxito (Oculta inicialmente) -->
+    <div class="form-container" id="successMessage" style="display: none;">
+      <div class="success-animation">
+        <i class="fas fa-check-circle success-icon"></i>
+        <h2>¡Solicitud Recibida!</h2>
+        <p>Hemos procesado su solicitud correctamente.</p>
 
-    <div class="requests-container">
-      <div id="requestsList"></div>
+        <div class="ticket-info">
+          <p>Su número de ticket es:</p>
+          <div class="ticket-id" id="ticketIdDisplay">DOC-2024-001</div>
+          <p><small>Guarde este número para verificar el estatus.</small></p>
+        </div>
+
+        <div style="margin-top: 30px;">
+          <button class="btn-submit" onclick="window.location.reload()" style="background-color: #3498db;">Realizar otra
+            solicitud</button>
+          <br><br>
+          <a href="index.html" style="color: #7f8c8d;">Volver al inicio</a>
+        </div>
+      </div>
     </div>
   </div>
 
-  <script type="module">
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-    const supabase = createClient(
-      "https://alqdcxtzwximorkkyecp.supabase.co",
-      "sb_publishable_V6kHfLnjsyODWSgJXJ9igg_gv1QPebb"
-    );
-
-    const requestsList = document.getElementById("requestsList");
-    const totalRequestsEl = document.getElementById("totalRequests");
-    const pendingRequestsEl = document.getElementById("pendingRequests");
-    const inProgressRequestsEl = document.getElementById("inProgressRequests");
-    const completedRequestsEl = document.getElementById("completedRequests");
-
-    const searchTeacher = document.getElementById("searchTeacher");
-    const searchTechnician = document.getElementById("searchTechnician");
-    const searchDate = document.getElementById("searchDate");
-    const filterStatus = document.getElementById("filterStatus");
-    const applyFiltersBtn = document.getElementById("applyFiltersBtn");
-    const clearFiltersBtn = document.getElementById("clearFiltersBtn");
-
-    let allRequests = [];
-
-    function normalizeText(value) {
-      return (value || "").toString().trim().toLowerCase();
-    }
-
-    function getPriorityText(priority) {
-      const priorities = {
-        baja: "Baja",
-        media: "Media",
-        alta: "Alta",
-        critica: "Crítica"
-      };
-      return priorities[priority] || priority || "Sin prioridad";
-    }
-
-    function getStatusClass(status) {
-      const normalized = normalizeText(status);
-
-      if (normalized === "pendiente") return "status-pendiente";
-      if (normalized === "en proceso") return "status-en-proceso";
-      if (normalized === "realizado") return "status-realizado";
-
-      return "status-pendiente";
-    }
-
-    function formatDate(dateValue) {
-      const date = new Date(dateValue);
-      return date.toLocaleString("es-ES", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      });
-    }
-
-    function updateStats(requests) {
-      const total = requests.length;
-      const pending = requests.filter(r => normalizeText(r.estado) === "pendiente").length;
-      const inProgress = requests.filter(r => normalizeText(r.estado) === "en proceso").length;
-      const completed = requests.filter(r => normalizeText(r.estado) === "realizado").length;
-
-      totalRequestsEl.textContent = total;
-      pendingRequestsEl.textContent = pending;
-      inProgressRequestsEl.textContent = inProgress;
-      completedRequestsEl.textContent = completed;
-    }
-
-    function getFilteredRequests() {
-      const teacherValue = normalizeText(searchTeacher.value);
-      const technicianValue = normalizeText(searchTechnician.value);
-      const dateValue = searchDate.value;
-      const statusValue = normalizeText(filterStatus.value);
-
-      return allRequests.filter((request) => {
-        const maestro = normalizeText(request.nombre_maestro);
-        const tecnico = normalizeText(request.tecnico_asignado);
-        const estado = normalizeText(request.estado);
-        const fecha = request.created_at ? new Date(request.created_at).toISOString().slice(0, 10) : "";
-
-        const teacherMatch = !teacherValue || maestro.includes(teacherValue);
-        const technicianMatch = !technicianValue || tecnico.includes(technicianValue);
-        const dateMatch = !dateValue || fecha === dateValue;
-        const statusMatch = !statusValue || estado === statusValue;
-
-        return teacherMatch && technicianMatch && dateMatch && statusMatch;
-      });
-    }
-
-    function renderRequests(requests) {
-      requestsList.innerHTML = "";
-
-      if (!requests.length) {
-        requestsList.innerHTML = `
-          <div class="no-requests">
-            <div class="no-requests-icon">📋</div>
-            <p>No hay solicitudes que coincidan con los filtros.</p>
-            <p>Prueba cambiar la fecha, maestro, técnico o estado.</p>
-          </div>
-        `;
-        return;
-      }
-
-      requests.forEach((request, index) => {
-        const estado = request.estado || "Pendiente";
-        const estadoClase = getStatusClass(estado);
-
-        const card = document.createElement("div");
-        card.className = "request-card";
-        
-        const codigo = request.codigo_seguimiento || 'ST-----';
-        const hasImages = request.imagenes && request.imagenes.length > 0;
-
-        card.innerHTML = `
-          <div class="request-header">
-            <div class="request-info">
-              <h3 class="request-title" style="font-weight:700; color:#1d4ed8;">${codigo}</h3>
-              <div class="request-meta">
-                <span class="request-date">📅 ${formatDate(request.created_at)}</span>
-                <span class="request-status ${estadoClase}">${estado}</span>
-                <span class="priority-badge priority-${request.urgencia}">${getPriorityText(request.urgencia)}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="request-details">
-            <div class="detail-item">
-              <span class="detail-label">👤 Maestro:</span>
-              <span class="detail-value">${request.nombre_maestro || ""}</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">🏢 Departamento:</span>
-              <span class="detail-value">${request.departamento || ""}</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">🔧 Problema:</span>
-              <span class="detail-value">${request.tipo_problema || ""}</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">📝 Descripción:</span>
-              <span class="detail-value">${request.descripcion_problema || ""}</span>
-            </div>
-            ${hasImages ? `
-            <div class="detail-item">
-              <span class="detail-label">📷 Evidencia:</span>
-              <button class="btn-view-images" onclick="viewRequestImages(${index})">Ver ${request.imagenes.length} imágenes</button>
-            </div>
-            ` : ''}
-            <div class="detail-item">
-              <span class="detail-label">🧑‍🔧 Técnico:</span>
-              <span class="detail-value">${request.tecnico_asignado || "No asignado"}</span>
-            </div>
-          </div>
-
-          <div class="tech-input">
-            <input type="text" id="tech-${request.id}" placeholder="Escribe el nombre del técnico" value="${request.tecnico_asignado || ""}">
-            <button class="btn-assign" data-id="${request.id}">Guardar técnico</button>
-          </div>
-
-          <div class="actions-row">
-            <button class="btn-status btn-pending" data-id="${request.id}" data-status="Pendiente">Marcar Pendiente</button>
-            <button class="btn-status btn-progress" data-id="${request.id}" data-status="En Proceso">Marcar En Proceso</button>
-            <button class="btn-status btn-done" data-id="${request.id}" data-status="Realizado">Marcar Realizado</button>
-            <button class="btn-delete" data-delete-id="${request.id}">Eliminar servicio</button>
-          </div>
-        `;
-
-        requestsList.appendChild(card);
-      });
-
-      document.querySelectorAll(".btn-status").forEach((button) => {
-        button.addEventListener("click", async () => {
-          const id = Number(button.dataset.id);
-          const status = button.dataset.status;
-          await updateRequestStatus(id, status);
-        });
-      });
-
-      document.querySelectorAll(".btn-delete").forEach((button) => {
-        button.addEventListener("click", async () => {
-          const id = Number(button.dataset.deleteId);
-          await deleteRequest(id);
-        });
-      });
-
-      document.querySelectorAll(".btn-assign").forEach((button) => {
-        button.addEventListener("click", async () => {
-          const id = Number(button.dataset.id);
-          const input = document.getElementById(`tech-${id}`);
-          const tecnico = input.value.trim();
-          await assignTechnician(id, tecnico);
-        });
-      });
-    }
-
-    function applyFilters() {
-      const filtered = getFilteredRequests();
-      updateStats(filtered);
-      renderRequests(filtered);
-    }
-
-    async function loadRequests() {
-      const { data, error } = await supabase
-        .from("solicitudes_servicio")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("Error cargando solicitudes:", error);
-        requestsList.innerHTML = `
-          <div class="no-requests">
-            <div class="no-requests-icon">❌</div>
-            <p>Error al cargar las solicitudes.</p>
-            <p>${error.message}</p>
-          </div>
-        `;
-        return;
-      }
-
-      allRequests = data || [];
-      window.allRequests = allRequests; // Store globally for image viewing
-      applyFilters();
-    }
-
-    window.viewRequestImages = function(index) {
-      const request = window.allRequests[index];
-      if (request && request.imagenes && request.imagenes.length > 0) {
-        const images = request.imagenes;
-        let html = '<div style="position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9999;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:1rem;padding:2rem;overflow:auto;">';
-        html += '<button onclick="this.parentElement.remove()" style="position:absolute;top:1rem;right:1rem;background:#ef4444;color:white;border:none;padding:0.75rem 1.5rem;border-radius:8px;cursor:pointer;font-size:1.2rem;font-weight:700;">Cerrar</button>';
-        html += '<h2 style="position:absolute;top:1rem;left:1rem;color:white;font-size:1.5rem;">Evidencia - Solicitud ' + (request.codigo_seguimiento || 'ST-----') + '</h2>';
-        images.forEach((img, i) => {
-          html += `<img src="${img}" style="max-width:350px;max-height:350px;border-radius:8px;border:3px solid white;margin:0.5rem;">`;
-        });
-        html += '</div>';
-        document.body.insertAdjacentHTML('beforeend', html);
-      }
-    };
-
-    async function updateRequestStatus(id, nuevoEstado) {
-  const confirmed = confirm(`¿Seguro que deseas cambiar el estado a "${nuevoEstado}"?`);
-  if (!confirmed) return;
-
-  const { error } = await supabase
-    .from("solicitudes_servicio")
-    .update({ estado: nuevoEstado })
-    .eq("id", id);
-
-  if (error) {
-    console.error("Error actualizando estado:", error);
-    alert("❌ No se pudo actualizar el estado: " + error.message);
-    return;
-  }
-
-  alert(`✅ El servicio fue marcado como "${nuevoEstado}".`);
-  await loadRequests();
-}
-    async function assignTechnician(id, tecnico) {
-      const { error } = await supabase
-        .from("solicitudes_servicio")
-        .update({ tecnico_asignado: tecnico })
-        .eq("id", id);
-
-      if (error) {
-        console.error("Error guardando técnico:", error);
-        alert("❌ No se pudo guardar el técnico: " + error.message);
-        return;
-      }
-
-      await loadRequests();
-    }
-
-   async function deleteRequest(id) {
-  const confirmed = confirm("⚠️ Vas a eliminar este servicio. Esta acción no se puede deshacer.\n\n¿Deseas continuar?");
-  if (!confirmed) return;
-
-  const { error } = await supabase
-    .from("solicitudes_servicio")
-    .delete()
-    .eq("id", id);
-
-  if (error) {
-    console.error("Error eliminando servicio:", error);
-    alert("❌ No se pudo eliminar el servicio: " + error.message);
-    return;
-  }
-
-  alert("✅ El servicio fue eliminado correctamente.");
-  await loadRequests();
-}
-
-    applyFiltersBtn.addEventListener("click", applyFilters);
-
-    clearFiltersBtn.addEventListener("click", () => {
-      searchTeacher.value = "";
-      searchTechnician.value = "";
-      searchDate.value = "";
-      filterStatus.value = "";
-      applyFilters();
-    });
-
-    searchTeacher.addEventListener("input", applyFilters);
-    searchTechnician.addEventListener("input", applyFilters);
-    searchDate.addEventListener("change", applyFilters);
-    filterStatus.addEventListener("change", applyFilters);
-
-    document.addEventListener("DOMContentLoaded", async () => {
-      await loadRequests();
-
-      setInterval(loadRequests, 30000);
-
-      supabase
-        .channel("solicitudes-realtime")
-        .on(
-          "postgres_changes",
-          { event: "*", schema: "public", table: "solicitudes_servicio" },
-          async () => {
-            await loadRequests();
-          }
-        )
-        .subscribe();
-    });
-
-// Dark mode toggle
-    const dm = document.getElementById('darkModeToggle');
-    if (dm) {
-      if (localStorage.getItem('darkMode') === 'enabled') document.body.classList.add('dark-mode');
-      dm.addEventListener('change', () => {
-        const isDark = document.body.classList.toggle('dark-mode', dm.checked);
-        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-        window.dispatchEvent(new Event('darkModeSync'));
-      });
-    }
-    window.addEventListener('darkModeSync', () => {
-      const isDark = localStorage.getItem('darkMode') === 'enabled';
-      document.body.classList.toggle('dark-mode', isDark);
-      if (dm) dm.checked = isDark;
-    });
-  </script>
+  <!-- Scripts -->
+  <script src="js/services-manager.js"></script>
+  <script src="js/solicitudes.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recursos para Estudiantes - PCB System</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+  <link rel="stylesheet" href="dropdown-fix.css">
+  <link rel="stylesheet" href="image-popup.css">
+  <script src="translations.js"></script>
+  <style>
+    :root {
+      --primary: #667eea;
+      --secondary: #764ba2;
+      --bg: #ffffff;
+      --bg-alt: #f8f9fc;
+      --text-main: #1e293b;
+      --text-soft: #64748b;
+    }
+
+    body.dark-mode {
+      --bg: #0B1220;
+      --bg-alt: #1a1a2e;
+      --text-main: #E5E7EB;
+      --text-soft: #9CA3AF;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg-alt);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    .resources-hero {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .resources-hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .resources-hero p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .resources-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .resource-card {
+      background: var(--bg);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body.dark-mode .resource-card {
+      background: rgba(30, 41, 59, 0.95);
+    }
+
+    .resource-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    }
+
+    .resource-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .resource-card h2 {
+      color: var(--primary);
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .resource-card > p {
+      color: var(--text-soft);
+      text-align: center;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .resource-links {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-soft);
+    }
+
+    .resource-links h4 {
+      color: var(--text-main);
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .link-list {
+      list-style: none;
+    }
+
+    .link-list li {
+      margin-bottom: 0.5rem;
+    }
+
+    .link-list a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 0.5rem;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    .link-list a:hover {
+      background: rgba(102, 126, 234, 0.1);
+    }
+
+    .btn-repasar {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-top: 1.5rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .btn-repasar:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .info-section {
+      background: var(--bg);
+      padding: 2rem;
+      border-radius: 16px;
+      margin-top: 3rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    body.dark-mode .info-section {
+      background: rgba(30, 41, 59, 0.95);
+    }
+
+    .info-section h3 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .info-section ul {
+      margin-left: 1.5rem;
+      color: var(--text-soft);
+    }
+
+    .info-section li {
+      margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .resources-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <nav class="main-nav">
+          <ul>
+            <li><a href="index.html#inicio">Inicio</a></li>
+            <li><a href="quienes-somos.html">Quiénes Somos</a></li>
+            <li class="dropdown">
+              <a href="#" style="pointer-events: none;">Servicios Digitales <i class="fas fa-chevron-down"></i></a>
+              <ul class="dropdown-menu">
+                <li><a href="matricula.html">📝 Matrícula Online</a></li>
+                <li><a href="solicitudes.html">📄 Solicitud de Documentos</a></li>
+                <li><a href="https://pcbsystempr-cyber.github.io/Servicio-Tecnico/">🔧 Servicios Técnicos</a></li>
+                <li><a href="orientacion.html">🧠 Orientación</a></li>
+                <li><a href="biblioteca.html">📚 Biblioteca</a></li>
+                <li><a href="comedor.html">🍽️ Comedor</a></li>
+                <li><a href="padres.html">👨‍👩‍👧 Portal de Padres</a></li>
+                <li><a href="seguridad.html">🛡️ Seguridad</a></li>
+              </ul>
+            </li>
+            <li><a href="participacion-comunitaria.html">Vida Estudiantil</a></li>
+            <li><a href="normas-reglamentos.html">Normas</a></li>
+          </ul>
+        </nav>
+        <button class="hamburger-menu" id="hamburgerBtn" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content-centered">
+        <h1>📚 Recursos para Estudiantes</h1>
+        <p>Materiales de preparación académica para tu éxito educativo</p>
+      </div>
+    </div>
+  </section>
+
+<!-- RECURSOS PRINCIPALES -->
+  <section class="section">
+    <div class="resources-container">
+      <div class="resources-grid">
+         
+        <!-- College Board -->
+        <article class="resource-card">
+          <div class="resource-icon">🎯</div>
+          <h2>College Board</h2>
+          <p>Preparación para exámenes de admisión a universidades y colleges. Incluye práctica para SAT y orientación sobre admisión universitaria.</p>
+          
+          <div class="resource-links">
+            <h4>📌 Recursos Oficiales:</h4>
+            <ul class="link-list">
+              <li><a href="https://pr，孔" target="_blank">🔗 Portal Oficial College Board Puerto Rico</a></li>
+              <li><a href="https://www.collegeboard.org/" target="_blank">🔗 College Board USA</a></li>
+              <li><a href="https://prportal3.ed.gov/IGS/Account/LogOn?Url=pg" target="_blank">🔗 Portal de Solicitud de Transcript - DEPR</a></li>
+              <li><a href="https://apstudents.collegeboard.org/" target="_blank">🔗 AP Students - Resultados AP</a></li>
+              <li><a href="https://www.khanacademy.org/test-prep/sat" target="_blank">🔗 Khan Academy - Prep SAT (Gratis)</a></li>
+            </ul>
+          </div>
+          
+          <a href="https://www.collegeboard.org/" class="btn-repasar" target="_blank">📝 Repasar Ahora</a>
+        </article>
+
+        <!-- Exámenes de Avanzado -->
+        <article class="resource-card">
+          <div class="resource-icon">📊</div>
+          <h2>Exámenes de Avanzado</h2>
+          <p>Recursos para exámenes AP (Advanced Placement). Prepárate para los exámenes de college level en la escuela.</p>
+          
+          <div class="resource-links">
+            <h4>📌 Recursos Oficiales:</h4>
+            <ul class="link-list">
+              <li><a href="https://apportal.ed.gov/" target="_blank">🔗 AP Central - Portal Oficial</a></li>
+              <li><a href="https://apstudents.collegeboard.org/" target="_blank">🔗 AP Students</a></li>
+              <li><a href="https://apclassroom.collegeboard.org/" target="_blank">🔗 AP Classroom</a></li>
+              <li><a href="https://www.khanacademy.org/ap" target="_blank">🔗 Khan Academy AP (Gratis)</a></li>
+              <li><a href="https://www.youtube.com/channel/UC--7_JKGcljL7qLqcA3e9YA" target="_blank">🔗 Aprende y Crece - Videos Educativos</a></li>
+            </ul>
+          </div>
+          
+          <a href="https://apstudents.collegeboard.org/" class="btn-repasar" target="_blank">📝 Repasar Ahora</a>
+        </article>
+
+        <!-- CRECE -->
+        <article class="resource-card">
+          <div class="resource-icon">📋</div>
+          <h2>Pruebas CRECE</h2>
+          <p>Preparación para las pruebas del Proyecto CRECE del Departamento de Educación de Puerto Rico.</p>
+          
+          <div class="resource-links">
+            <h4>📌 Recursos Oficiales:</h4>
+            <ul class="link-list">
+              <li><a href="https://www.de.pr.gov/" target="_blank">🔗 Departamento de Educación PR</a></li>
+              <li><a href="https://www.educacion.pr.gov/" target="_blank">🔗 Portal Educación PR</a></li>
+              <li><a href="https://www.inter.edu/portal/crece" target="_blank">🔗 Recursos CRECE - Universidad Inter</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=pruebas+CRECE+ejercicios+PR" target="_blank">🔗 Videos de Práctica en YouTube</a></li>
+              <li><a href="https://www.mentelearning.com/puerto-rico-crece" target="_blank">🔗 Práctica CRECE - Mente Learning</a></li>
+            </ul>
+          </div>
+          
+          <a href="https://www.de.pr.gov/" class="btn-repasar" target="_blank">📝 Repasar Ahora</a>
+        </article>
+
+        <!-- ASVA -->
+        <article class="resource-card">
+          <div class="resource-icon">✅</div>
+          <h2>ASVA</h2>
+          <p>Preparación para las pruebas de Aval Académico (ASVA). Evaluación de competencias académicas del DEPR.</p>
+          
+          <div class="resource-links">
+            <h4>📌 Recursos Oficiales:</h4>
+            <ul class="link-list">
+              <li><a href="https://www.de.pr.gov/" target="_blank">🔗 Departamento de Educación PR</a></li>
+              <li><a href="https://www.educacion.pr.gov/" target="_blank">🔗 Portal Educación PR</a></li>
+              <li><a href="https://recursos.educacion.pr.gov/" target="_blank">🔗 Recursos Educativos PR</a></li>
+              <li><a href="https://www.mentelearning.com/asva" target="_blank">🔗 Práctica ASVA - Mente Learning</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=ASVA+prueba+Puero+Rico+ejercicios" target="_blank">🔗 Videos de Práctica YouTube</a></li>
+            </ul>
+          </div>
+          
+          <a href="https://www.de.pr.gov/" class="btn-repasar" target="_blank">📝 Repasar Ahora</a>
+        </article>
+
+        <!-- Matemáticas -->
+        <article class="resource-card">
+          <div class="resource-icon">🔢</div>
+          <h2>Matemáticas</h2>
+          <p>Recursos de práctica para matemáticas desde nivel básico hasta cálculo. Incluye álgebra, geometría, estadística y más.</p>
+          
+          <div class="resource-links">
+            <h4>📌 Recursos Recomendados:</h4>
+            <ul class="link-list">
+              <li><a href="https://www.khanacademy.org/math" target="_blank">🔗 Khan Academy Matemáticas (Gratis)</a></li>
+              <li><a href="https://www.geogebra.org/" target="_blank">🔗 GeoGebra - Geometría Interactiva</a></li>
+              <li><a href="https://www.desmos.com/calculator" target="_blank">🔗 Desmos - Calculadora Gráfica</a></li>
+              <li><a href="https://www.mathway.com/" target="_blank">🔗 Mathway - Resuelve Problemas</a></li>
+              <li><a href="https://www.ixl.com/" target="_blank">🔗 IXL - Práctica de Matemáticas</a></li>
+            </ul>
+          </div>
+          
+          <a href="https://www.khanacademy.org/math" class="btn-repasar" target="_blank">📝 Repasar Ahora</a>
+        </article>
+
+        <!-- Inglés -->
+        <article class="resource-card">
+          <div class="resource-icon">🌎</div>
+          <h2>Inglés</h2>
+          <p>Preparación para pruebas de inglés, incluyendo lectura, escritura y gramática. Recursos para ESL y estudiantes bilingües.</p>
+          
+          <div class="resource-links">
+            <h4>📌 Recursos Recomendados:</h4>
+            <ul class="link-list">
+              <li><a href="https://www.khanacademy.org/test-prep/sat/sat-reading" target="_blank">🔗 Khan Academy SAT Reading</a></li>
+              <li><a href="https://www.khanacademy.org/test-prep/sat/sat-writing-language" target="_blank">🔗 Khan Academy SAT Writing</a></li>
+              <li><a href="https://www.grammarly.com/" target="_blank">🔗 Grammarly - Ayuda con Escritura</a></li>
+              <li><a href="https://www.bbc.co.uk/learningenglish/" target="_blank">🔗 BBC Learning English</a></li>
+              <li><a href="https://www.newsela.com/" target="_blank">🔗 Newsela - Lectura con Actualidad</a></li>
+            </ul>
+          </div>
+          
+          <a href="https://www.khanacademy.org/test-prep/sat" class="btn-repasar" target="_blank">📝 Repasar Ahora</a>
+        </article>
+
+      </div>
+
+      <!-- Información Adicional -->
+      <div class="info-section">
+        <h3>💡 Consejos para tus Pruebas</h3>
+        <ul>
+          <li><strong>Comienza temprano:</strong> Dale tiempo suficiente para prepararte antes de las fechas de examen.</li>
+          <li><strong>Practica con exámenes anteriores:</strong> Familiarízate con el formato y tipo de preguntas.</li>
+          <li><strong>Usa recursos gratuitos:</strong> Khan Academy y los portales del DEPR ofrecen materiales gratis.</li>
+          <li><strong>Organiza tu tiempo:</strong> Crea un calendario de estudio semanal.</li>
+          <li><strong>Pide ayuda:</strong> Consulta con tus maestros si necesitas apoyo adicional.</li>
+          <li><strong>Duerme bien:</strong> El día antes de la prueba, descansa adecuadamente.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; <script>document.write(new Date().getFullYear());</script> Escuela Superior Vocacional Pablo Colón Berdecia. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Script para el menú hamburguesa
+    document.addEventListener('DOMContentLoaded', function() {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const closeSidebar = document.getElementById('closeSidebar');
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', function() {
+          if (sidebarMenu) sidebarMenu.classList.add('active');
+          if (sidebarOverlay) sidebarOverlay.classList.add('active');
+        });
+      }
+
+      function closeSidebarMenu() {
+        if (sidebarMenu) sidebarMenu.classList.remove('active');
+        if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+      }
+
+      if (closeSidebar) {
+        closeSidebar.addEventListener('click', closeSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+    });
+  </script>
+</body>
+</html>
