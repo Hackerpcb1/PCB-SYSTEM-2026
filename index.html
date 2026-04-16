@@ -575,25 +575,136 @@
           <div class="service-icon">📅</div>
           <h3>Calendario</h3>
           <p>Fechas importantes y cronograma de actividades.</p>
-          <a href="#" class="btn btn-secondary btn-small">Ver calendario</a>
+          <a href="#" class="btn btn-secondary btn-small" onclick="event.preventDefault();showProntoPopup()">Ver calendario</a>
         </article>
 
         <article class="card service-card">
           <div class="service-icon">🎉</div>
           <h3>Actividades</h3>
           <p>Eventos y actividades de la clase.</p>
-          <a href="#" class="btn btn-secondary btn-small">Ver actividades</a>
+          <a href="#" class="btn btn-secondary btn-small" onclick="event.preventDefault();showProntoPopup()">Ver actividades</a>
         </article>
 
         <article class="card service-card">
           <div class="service-icon">📸</div>
           <h3>Fotos</h3>
           <p>Reservación de fotos formales.</p>
-          <a href="#" class="btn btn-secondary btn-small">Reservar</a>
+          <a href="#" class="btn btn-secondary btn-small" onclick="event.preventDefault();showProntoPopup()">Reservar</a>
         </article>
       </div>
     </div>
   </section>
+
+  <!-- ══════════════════════════════════════
+       POPUP ¡PRONTO! — Clase Graduanda 2026
+       ══════════════════════════════════════ -->
+  <div id="prontoOverlay" style="display:none;" onclick="if(event.target===this)hideProntoPopup()"
+    style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);opacity:0;transition:opacity 0.3s;">
+  </div>
+  <div id="prontoModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-60%);z-index:10000;width:min(90vw,480px);opacity:0;transition:opacity 0.35s,transform 0.35s;">
+    <div style="background:linear-gradient(160deg,#1e1b4b 0%,#12103a 60%,#0f0c29 100%);border-radius:24px;padding:2.8rem 2.2rem 2.2rem;box-shadow:0 25px 70px rgba(0,0,0,0.55),0 0 0 1px rgba(139,92,246,0.35);text-align:center;position:relative;overflow:hidden;">
+
+      <!-- Destellos decorativos -->
+      <div style="position:absolute;top:-30px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,rgba(139,92,246,0.25) 0%,transparent 70%);pointer-events:none;"></div>
+      <div style="position:absolute;bottom:-40px;right:-30px;width:200px;height:200px;background:radial-gradient(circle,rgba(56,189,248,0.18) 0%,transparent 70%);pointer-events:none;"></div>
+
+      <!-- Botón cerrar -->
+      <button onclick="hideProntoPopup()" title="Cerrar"
+        style="position:absolute;top:14px;right:16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);width:32px;height:32px;border-radius:50%;font-size:1rem;cursor:pointer;line-height:1;transition:background 0.2s;"
+        onmouseover="this.style.background='rgba(255,255,255,0.18)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">✕</button>
+
+      <!-- Ícono animado -->
+      <div id="prontoIcon" style="font-size:4.5rem;line-height:1;margin-bottom:1.1rem;display:inline-block;">🎓</div>
+
+      <!-- Título -->
+      <div style="font-size:2.4rem;font-weight:900;background:linear-gradient(90deg,#a78bfa,#38bdf8,#a78bfa);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem;animation:prontoPulse 2.5s ease-in-out infinite;">
+        ¡Pronto!
+      </div>
+
+      <!-- Subtítulo -->
+      <p style="color:rgba(255,255,255,0.72);font-size:1rem;line-height:1.6;margin:0.6rem 0 1.6rem;max-width:320px;margin-left:auto;margin-right:auto;">
+        Esta sección estará disponible muy pronto.<br>
+        <span style="color:#a78bfa;font-weight:600;">Clase Graduanda 2026</span> — ¡Mantente pendiente! 🎉
+      </p>
+
+      <!-- Barra de progreso decorativa -->
+      <div style="background:rgba(255,255,255,0.08);border-radius:50px;height:6px;overflow:hidden;margin-bottom:1.6rem;">
+        <div style="height:100%;width:72%;background:linear-gradient(90deg,#a78bfa,#38bdf8);border-radius:50px;animation:prontoBar 2s ease-in-out infinite alternate;"></div>
+      </div>
+
+      <!-- Botón cerrar principal -->
+      <button onclick="hideProntoPopup()"
+        style="background:linear-gradient(135deg,#7c3aed,#2563eb);color:white;border:none;padding:0.8rem 2.2rem;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 18px rgba(124,58,237,0.45);font-family:inherit;"
+        onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 24px rgba(124,58,237,0.6)'"
+        onmouseout="this.style.transform='';this.style.boxShadow='0 4px 18px rgba(124,58,237,0.45)'">
+        ¡Entendido!
+      </button>
+    </div>
+  </div>
+
+  <style>
+    @keyframes prontoPulse {
+      0%,100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
+    @keyframes prontoBar {
+      from { width: 55%; } to { width: 85%; }
+    }
+    @keyframes prontoIconBounce {
+      0%,100% { transform: translateY(0) rotate(-3deg); }
+      50%      { transform: translateY(-10px) rotate(3deg); }
+    }
+  </style>
+
+  <script>
+    function showProntoPopup() {
+      var overlay = document.getElementById('prontoOverlay');
+      var modal   = document.getElementById('prontoModal');
+      var icon    = document.getElementById('prontoIcon');
+
+      overlay.style.display = 'flex';
+      modal.style.display   = 'block';
+
+      // Forzar reflow para que la transición funcione
+      overlay.offsetHeight;
+      overlay.style.opacity = '1';
+      modal.style.opacity   = '1';
+      modal.style.transform = 'translate(-50%,-50%)';
+
+      // Aplicar estilos completos al overlay (los estilos inline en HTML no se pueden duplicar con style attr)
+      overlay.style.position       = 'fixed';
+      overlay.style.inset          = '0';
+      overlay.style.zIndex         = '9999';
+      overlay.style.alignItems     = 'center';
+      overlay.style.justifyContent = 'center';
+      overlay.style.background     = 'rgba(0,0,0,0.65)';
+      overlay.style.backdropFilter = 'blur(6px)';
+      overlay.style.transition     = 'opacity 0.3s';
+      overlay.onclick = function(e) { if(e.target===overlay) hideProntoPopup(); };
+
+      icon.style.animation = 'prontoIconBounce 1.8s ease-in-out infinite';
+
+      document.addEventListener('keydown', escPronto);
+    }
+
+    function hideProntoPopup() {
+      var overlay = document.getElementById('prontoOverlay');
+      var modal   = document.getElementById('prontoModal');
+
+      overlay.style.opacity = '0';
+      modal.style.opacity   = '0';
+      modal.style.transform = 'translate(-50%,-60%)';
+
+      setTimeout(function() {
+        overlay.style.display = 'none';
+        modal.style.display   = 'none';
+      }, 320);
+
+      document.removeEventListener('keydown', escPronto);
+    }
+
+    function escPronto(e) { if (e.key === 'Escape') hideProntoPopup(); }
+  </script>
 
   <!-- PROGRAMAS VOCACIONALES (SLIDESHOW) -->
   <section id="programas" class="section section-alt">
